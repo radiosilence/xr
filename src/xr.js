@@ -1,5 +1,3 @@
-import 'babel-core/polyfill';
-
 const res = xhr => ({
   status: xhr.status,
   response: xhr.response,
