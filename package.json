@@ -1,6 +1,6 @@
 {
   "name": "xr",
-  "version": "0.0.2",
+  "version": "0.0.3",
   "description": "Ultra-simple wrapper around XMLHttpRequest.",
   "main": "xr.js",
   "scripts": {
@@ -26,8 +26,5 @@
     "babel-core": "^4.6.5",
     "babelify": "^5.0.3",
     "browserify": "^9.0.3"
-  },
-  "dependencies": {
-    "babel-core": "^4.6.5"
   }
 }
