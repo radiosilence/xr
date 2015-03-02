@@ -14,6 +14,9 @@ For instance, the library is by default set up to send/receive JSON (with
 the associated headers and parser/dumper already set up), but if you wanted to
 use something like XML, it's easy enough to override that with a few lines.
 
+It's lightweight, has no dependencies (other than having ES6 polyfills
+available), and adds pretty much no overhead over the standard XHR API.
+
 Quickstart
 ----------
 
