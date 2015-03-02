@@ -46,8 +46,8 @@
       Accept: "application/json",
       "Content-Type": "application/json"
     },
-    dumpFn: JSON.stringify,
-    loadFn: JSON.parse
+    dump: JSON.stringify,
+    load: JSON.parse
   };
 
   var xr = function (args) {
@@ -59,7 +59,7 @@
       xhr.open(opts.method, params ? "" + opts.url.split("?")[0] + "?" + params : opts.url, true);
       xhr.addEventListener("load", function () {
         if (xhr.status === 200) resolve(Object.assign({}, res(xhr), {
-          data: opts.loadFn(xhr.response)
+          data: opts.load(xhr.response)
         }), false);else reject(res(xhr));
       });
 
@@ -67,7 +67,7 @@
         xhr.setRequestHeader(header, opts.headers[header]);
       }for (var _event in opts.events) {
         xhr.addEventListener(_event, opts.events[_event].bind(null, xhr), false);
-      }xhr.send(typeof opts.data === "object" ? opts.dumpFn(opts.data) : opts.data);
+      }xhr.send(typeof opts.data === "object" ? opts.dump(opts.data) : opts.data);
     });
   };
 

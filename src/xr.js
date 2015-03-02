@@ -34,8 +34,8 @@ const defaults = {
     'Accept': 'application/json',
     'Content-Type': 'application/json'
   },
-  dumpFn: JSON.stringify,
-  loadFn: JSON.parse
+  dump: JSON.stringify,
+  load: JSON.parse
 };
 
 const xr = args => new Promise((resolve, reject) => {
@@ -46,7 +46,7 @@ const xr = args => new Promise((resolve, reject) => {
   xhr.open(opts.method, params ? `${opts.url.split('?')[0]}?${params}` : opts.url, true);
   xhr.addEventListener('load', () => {
     if (xhr.status === 200) resolve(Object.assign({}, res(xhr), {
-      data: opts.loadFn(xhr.response)
+      data: opts.load(xhr.response)
     }), false);
     else reject(res(xhr));
   });
@@ -54,7 +54,7 @@ const xr = args => new Promise((resolve, reject) => {
   for (let header in opts.headers) xhr.setRequestHeader(header, opts.headers[header]);
   for (let event in opts.events) xhr.addEventListener(event, opts.events[event].bind(null, xhr), false);
 
-  xhr.send(typeof opts.data === 'object' ? opts.dumpFn(opts.data) : opts.data);
+  xhr.send(typeof opts.data === 'object' ? opts.dump(opts.data) : opts.data);
 });
 
 xr.Methods = Methods;
