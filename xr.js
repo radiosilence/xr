@@ -60,6 +60,19 @@ var xr = function (args) {
 xr.Methods = Methods;
 xr.defaults = defaults;
 
+xr.get = function (url, params, args) {
+  return xr(Object.assign({ url: url, method: Methods.GET, params: params }, args));
+};
+xr.put = function (url, data, args) {
+  return xr(Object.assign({ url: url, method: Methods.PUT, data: data }, args));
+};
+xr.post = function (url, data, args) {
+  return xr(Object.assign({ url: url, method: Methods.POST, data: data }, args));
+};
+xr.del = function (url, args) {
+  return xr(Object.assign({ url: url, method: Methods.DELETE }, args));
+};
+
 module.exports = xr;
 
 },{}]},{},[1])(1)
