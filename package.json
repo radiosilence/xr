@@ -4,7 +4,8 @@
   "description": "Ultra-simple wrapper around XMLHttpRequest.",
   "main": "xr.js",
   "scripts": {
-    "build": "node node_modules/babel/bin/babel/index.js --modules umd -o xr.js --loose all src/xr.js"
+    "build": "node node_modules/babel/bin/babel/index.js --modules umd -o xr.js --loose all src/xr.js",
+    "prepublish": "npm run build"
   },
   "repository": {
     "type": "git",
