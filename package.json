@@ -1,0 +1,31 @@
+{
+  "name": "xr",
+  "version": "0.0.1",
+  "description": "Ultra-simple wrapper around XMLHttpRequest.",
+  "main": "xr.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/radiosilence/xr"
+  },
+  "keywords": [
+    "request",
+    "xmlhttprequest",
+    "json",
+    "ajax"
+  ],
+  "author": "James Cleveland",
+  "license": "BSD",
+  "bugs": {
+    "url": "https://github.com/radiosilence/xr/issues"
+  },
+  "homepage": "https://github.com/radiosilence/xr",
+  "devDependencies": {
+    "babel-core": "^4.6.5"
+  },
+  "dependencies": {
+    "babel-core": "^4.6.5"
+  }
+}
