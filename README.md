@@ -1,6 +1,5 @@
-==
 xr
-==
+========
 
 Really simple wrapper around XHR that provides a few bits of nice
 functionality, exposes the XHR object wherever relevant, and returns an
