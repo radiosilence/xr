@@ -1,10 +1,10 @@
 {
   "name": "xr",
-  "version": "0.0.1",
+  "version": "0.0.2",
   "description": "Ultra-simple wrapper around XMLHttpRequest.",
   "main": "xr.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "build": "node node_modules/browserify/bin/cmd.js -t babelify src/xr.js > xr.js"
   },
   "repository": {
     "type": "git",
@@ -21,12 +21,11 @@
   "bugs": {
     "url": "https://github.com/radiosilence/xr/issues"
   },
-  "scripts": {
-    "build": "node ./node_modules/babel/bin/babel/index.js src/xr.js > xr.js"
-  },
   "homepage": "https://github.com/radiosilence/xr",
   "devDependencies": {
-    "babel": "^4.6.5"
+    "babel-core": "^4.6.5",
+    "babelify": "^5.0.3",
+    "browserify": "^9.0.3"
   },
   "dependencies": {
     "babel-core": "^4.6.5"
