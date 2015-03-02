@@ -52,4 +52,9 @@ const xr = args => new Promise((resolve, reject) => {
 xr.Methods = Methods;
 xr.defaults = defaults;
 
+xr.get = (url, params, args) => xr(Object.assign({url: url, method: Methods.GET, params: params}, args));
+xr.put = (url, data, args) => xr(Object.assign({url: url, method: Methods.PUT, data: data}, args));
+xr.post = (url, data, args) => xr(Object.assign({url: url, method: Methods.POST, data: data}, args));
+xr.del = (url, args) => xr(Object.assign({url: url, method: Methods.DELETE}, args));
+
 export default xr;

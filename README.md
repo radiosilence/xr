@@ -14,6 +14,13 @@ Features
  * Has query parameter generation.
  * Supports events.
 
+Alias Methods
+-------------
+
+You can do some quick aliases to requests, for instance:
+    
+    xr.get('/my-url')
+
 Requirements
 ------------
 
