@@ -1,6 +1,6 @@
 {
   "name": "xr",
-  "version": "0.0.7",
+  "version": "0.0.9",
   "description": "Ultra-simple wrapper around XMLHttpRequest.",
   "main": "xr.js",
   "scripts": {
@@ -17,7 +17,7 @@
     "ajax"
   ],
   "author": "James Cleveland",
-  "license": "BSD",
+  "license": "MIT",
   "bugs": {
     "url": "https://github.com/radiosilence/xr/issues"
   },
