@@ -4,7 +4,7 @@
   "description": "Ultra-simple wrapper around XMLHttpRequest.",
   "main": "xr.js",
   "scripts": {
-    "build": "node node_modules/browserify/bin/cmd.js -t babelify src/xr.js > xr.js"
+    "build": "node node_modules/browserify/bin/cmd.js -t babelify src/xr.js -s xr > xr.js"
   },
   "repository": {
     "type": "git",
