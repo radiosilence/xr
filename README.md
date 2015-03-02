@@ -1,6 +1,26 @@
 xr
 ==
 
+    xr.get('/api/items', {take: 5})
+      .then(res => console.log(res.data));
+    
+    xr.post('/api/item', {name: 'hello'})
+      .then(res => console.log("new item", res.data));
+
+  Extended syntax:
+
+    xr({
+      method: xr.Methods.GET,
+      url: '/api/items',
+      params: {take: 5},
+      events: {
+        progress: (xhr, xhrProgressEvent) => {
+          console.log("xhr", xhr);
+          console.log("progress", xhProgressEvent);
+        }
+      }
+    });
+
 Really simple wrapper about XR that provides a couple of nice functions,
 exposes the XHR object wherever relevant, and returns an ES6 Promise.
 

@@ -52,7 +52,7 @@ var xr = function (args) {
     for (var header in opts.headers) {
       xhr.setRequestHeader(header, opts.headers[header]);
     }for (var _event in opts.events) {
-      xhr.addEventListener(_event, opts.events[_event].bind(xhr), false);
+      xhr.addEventListener(_event, opts.events[_event].bind(null, xhr), false);
     }xhr.send(typeof opts.data === "object" ? opts.dumpFn(opts.data) : opts.data);
   });
 };
