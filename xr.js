@@ -1,12 +1,20 @@
 (function(f){if(typeof exports==="object"&&typeof module!=="undefined"){module.exports=f()}else if(typeof define==="function"&&define.amd){define([],f)}else{var g;if(typeof window!=="undefined"){g=window}else if(typeof global!=="undefined"){g=global}else if(typeof self!=="undefined"){g=self}else{g=this}g.xr = f()}})(function(){var define,module,exports;return (function e(t,n,r){function s(o,u){if(!n[o]){if(!t[o]){var a=typeof require=="function"&&require;if(!u&&a)return a(o,!0);if(i)return i(o,!0);var f=new Error("Cannot find module '"+o+"'");throw f.code="MODULE_NOT_FOUND",f}var l=n[o]={exports:{}};t[o][0].call(l.exports,function(e){var n=t[o][1][e];return s(n?n:e)},l,l.exports,e,t,n,r)}return n[o].exports}var i=typeof require=="function"&&require;for(var o=0;o<r.length;o++)s(r[o]);return s})({1:[function(require,module,exports){
 "use strict";
 
+/**
+ * xr (c) James Cleveland 2015
+ * URL: https://github.com/radiosilence/xr
+ * License: BSD
+ */
+
+if (!Promise) console.error("Promise not found, xr will not work, please use a shim.");
+if (!Object.assign) console.error("Object.assign not found, xr will not work, please use a shim.");
+
 var res = function (xhr) {
   return {
     status: xhr.status,
     response: xhr.response,
-    xhr: xhr,
-    params: {}
+    xhr: xhr
   };
 };
 
@@ -14,7 +22,7 @@ var getParams = function (data, url) {
   var ret = [];
   for (var k in data) {
     ret.push("" + encodeURIComponent(k) + "=" + encodeURIComponent(data[k]));
-  }if (url.split("?").length > 1) ret.push(url.split("?")[1]);
+  }if (url && url.split("?").length > 1) ret.push(url.split("?")[1]);
   return ret.join("&");
 };
 

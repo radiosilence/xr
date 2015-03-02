@@ -16,7 +16,7 @@ const res = xhr => ({
 const getParams = (data, url) => {
   let ret = [];
   for (let k in data) ret.push(`${encodeURIComponent(k)}=${encodeURIComponent(data[k])}`);
-  if (url.split('?').length > 1) ret.push(url.split('?')[1]);
+  if (url && url.split('?').length > 1) ret.push(url.split('?')[1]);
   return ret.join('&');
 };
 
