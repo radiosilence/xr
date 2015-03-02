@@ -1,3 +1,6 @@
+if (!Promise) console.error('Promise not found, xr will not work, please use a shim.');
+if (!Object.assign) console.error('Object.assign not found, xr will not work, please use a shim.');
+
 const res = xhr => ({
   status: xhr.status,
   response: xhr.response,
