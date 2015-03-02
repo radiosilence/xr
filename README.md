@@ -1,3 +1,4 @@
+    ==
     xr
     ==
 
@@ -5,13 +6,16 @@
     exposes the XHR object wherever relevant, and returns an ES6 Promise (or
     whatever Promise is set to globally, if you want to use something else).
 
+    Quickstart
+    ----------
+
         xr.get('/api/items', {take: 5})
           .then(res => console.log(res.data));
         
         xr.post('/api/item', {name: 'hello'})
           .then(res => console.log("new item", res.data));
 
-      Extended syntax:
+    Extended syntax:
 
         xr({
           method: xr.Methods.GET,
@@ -48,4 +52,8 @@
 
     There must be a polyfill that supports at least the standard ES6 promise API
     (xr will use whatever's there), and Object.assign().
+    
+    License
+    -------
 
+    See LICENSE
