@@ -36,7 +36,6 @@
     --------
 
      * Returns ES6 promises.
-     * Rejects if not 200.
      * Has query parameter generation.
      * Supports events.
 
