@@ -4,7 +4,7 @@
   "description": "Ultra-simple wrapper around XMLHttpRequest.",
   "main": "xr.js",
   "scripts": {
-    "build": "node node_modules/browserify/bin/cmd.js -t babelify src/xr.js -s xr > xr.js"
+    "build": "node node_modules/babel/bin/babel/index.js --modules umd -o xr.js --loose all src/xr.js"
   },
   "repository": {
     "type": "git",
@@ -23,8 +23,6 @@
   },
   "homepage": "https://github.com/radiosilence/xr",
   "devDependencies": {
-    "babel-core": "^4.6.5",
-    "babelify": "^5.0.3",
-    "browserify": "^9.0.3"
+    "babel": "^4.6.5"
   }
 }
