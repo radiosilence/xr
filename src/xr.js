@@ -1,3 +1,9 @@
+/**
+ * xr (c) James Cleveland 2015
+ * URL: https://github.com/radiosilence/xr
+ * License: BSD
+ */
+
 if (!Promise) console.error('Promise not found, xr will not work, please use a shim.');
 if (!Object.assign) console.error('Object.assign not found, xr will not work, please use a shim.');
 
