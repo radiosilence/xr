@@ -11,6 +11,10 @@ The idea was to make a pragmatic library that's pre-configured for the 90%
 use case, but override-able for anyone that wants to do anything
 a bit off the beaten track.
 
+For instance, the library is by default set up to send/receive JSON (with
+the associated headers and parser/dumper already set up), but if you wanted to
+use something like XML, it's easy enough to override that with a few lines.
+
 Quickstart
 ----------
 
