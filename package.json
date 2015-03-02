@@ -21,9 +21,12 @@
   "bugs": {
     "url": "https://github.com/radiosilence/xr/issues"
   },
+  "scripts": {
+    "build": "node ./node_modules/babel/bin/babel/index.js src/xr.js > xr.js"
+  },
   "homepage": "https://github.com/radiosilence/xr",
   "devDependencies": {
-    "babel-core": "^4.6.5"
+    "babel": "^4.6.5"
   },
   "dependencies": {
     "babel-core": "^4.6.5"
