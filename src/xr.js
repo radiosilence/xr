@@ -1,8 +1,7 @@
 const res = xhr => ({
   status: xhr.status,
   response: xhr.response,
-  xhr: xhr,
-  params: {}
+  xhr: xhr
 });
 
 const getParams = (data, url) => {
