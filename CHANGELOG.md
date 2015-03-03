@@ -1,6 +1,12 @@
 xr Changelog
 ============
 
+0.1.4
+-----
+
+* Remove Promise warning, because it would be annoying if you're providing your
+  own promises.
+
 0.1.3
 -----
 

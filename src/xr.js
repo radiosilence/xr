@@ -4,8 +4,6 @@
  * License: BSD
  */
 
-if (!Promise) console.error('Promise not found, xr will not work, please use a shim.');
-
 const res = xhr => ({
   status: xhr.status,
   response: xhr.response,
