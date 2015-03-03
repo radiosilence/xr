@@ -5,13 +5,21 @@
  */
 
 if (!Promise) console.error('Promise not found, xr will not work, please use a shim.');
-if (!Object.assign) console.error('Object.assign not found, xr will not work, please use a shim.');
 
 const res = xhr => ({
   status: xhr.status,
   response: xhr.response,
   xhr: xhr
 });
+
+const assign = function(t, s) {
+  let l = arguments.length, i = 1;
+  while (i < l) {
+    let s = arguments[i++];
+    for (let k in s) { t[k] = s[k]; }
+  }
+  return t;
+};
 
 const getParams = (data, url) => {
   let ret = [];
@@ -35,17 +43,18 @@ const defaults = {
     'Content-Type': 'application/json'
   },
   dump: JSON.stringify,
-  load: JSON.parse
+  load: JSON.parse,
+  promise: Promise
 };
 
-const xr = args => new Promise((resolve, reject) => {
-  let opts = Object.assign({}, defaults, args);
+const xr = args => new (args && args.promise ? args.promise : defaults.promise)((resolve, reject) => {
+  let opts = assign({}, defaults, args);
   let xhr = new XMLHttpRequest();
   let params = getParams(opts.params, opts.url);
 
   xhr.open(opts.method, params ? `${opts.url.split('?')[0]}?${params}` : opts.url, true);
   xhr.addEventListener('load', () => {
-    if (xhr.status >= 200 && xhr.status < 300) resolve(Object.assign({}, res(xhr), {
+    if (xhr.status >= 200 && xhr.status < 300) resolve(assign({}, res(xhr), {
       data: opts.load(xhr.response)
     }), false);
     else reject(res(xhr));
@@ -57,12 +66,13 @@ const xr = args => new Promise((resolve, reject) => {
   xhr.send(typeof opts.data === 'object' ? opts.dump(opts.data) : opts.data);
 });
 
+xr.assign = assign;
 xr.Methods = Methods;
 xr.defaults = defaults;
 
-xr.get = (url, params, args) => xr(Object.assign({url: url, method: Methods.GET, params: params}, args));
-xr.put = (url, data, args) => xr(Object.assign({url: url, method: Methods.PUT, data: data}, args));
-xr.post = (url, data, args) => xr(Object.assign({url: url, method: Methods.POST, data: data}, args));
-xr.del = (url, args) => xr(Object.assign({url: url, method: Methods.DELETE}, args));
+xr.get = (url, params, args) => xr(assign({url: url, method: Methods.GET, params: params}, args));
+xr.put = (url, data, args) => xr(assign({url: url, method: Methods.PUT, data: data}, args));
+xr.post = (url, data, args) => xr(assign({url: url, method: Methods.POST, data: data}, args));
+xr.del = (url, args) => xr(assign({url: url, method: Methods.DELETE}, args));
 
 export default xr;

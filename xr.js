@@ -14,7 +14,6 @@
    */
 
   if (!Promise) console.error("Promise not found, xr will not work, please use a shim.");
-  if (!Object.assign) console.error("Object.assign not found, xr will not work, please use a shim.");
 
   var res = function (xhr) {
     return {
@@ -22,6 +21,18 @@
       response: xhr.response,
       xhr: xhr
     };
+  };
+
+  var assign = function assign(t, s) {
+    var l = arguments.length,
+        i = 1;
+    while (i < l) {
+      var _s = arguments[i++];
+      for (var k in _s) {
+        t[k] = _s[k];
+      }
+    }
+    return t;
   };
 
   var getParams = function (data, url) {
@@ -47,18 +58,19 @@
       "Content-Type": "application/json"
     },
     dump: JSON.stringify,
-    load: JSON.parse
+    load: JSON.parse,
+    promise: Promise
   };
 
   var xr = function (args) {
-    return new Promise(function (resolve, reject) {
-      var opts = Object.assign({}, defaults, args);
+    return new (args && args.promise ? args.promise : defaults.promise)(function (resolve, reject) {
+      var opts = assign({}, defaults, args);
       var xhr = new XMLHttpRequest();
       var params = getParams(opts.params, opts.url);
 
       xhr.open(opts.method, params ? "" + opts.url.split("?")[0] + "?" + params : opts.url, true);
       xhr.addEventListener("load", function () {
-        if (xhr.status >= 200 && xhr.status < 300) resolve(Object.assign({}, res(xhr), {
+        if (xhr.status >= 200 && xhr.status < 300) resolve(assign({}, res(xhr), {
           data: opts.load(xhr.response)
         }), false);else reject(res(xhr));
       });
@@ -71,20 +83,21 @@
     });
   };
 
+  xr.assign = assign;
   xr.Methods = Methods;
   xr.defaults = defaults;
 
   xr.get = function (url, params, args) {
-    return xr(Object.assign({ url: url, method: Methods.GET, params: params }, args));
+    return xr(assign({ url: url, method: Methods.GET, params: params }, args));
   };
   xr.put = function (url, data, args) {
-    return xr(Object.assign({ url: url, method: Methods.PUT, data: data }, args));
+    return xr(assign({ url: url, method: Methods.PUT, data: data }, args));
   };
   xr.post = function (url, data, args) {
-    return xr(Object.assign({ url: url, method: Methods.POST, data: data }, args));
+    return xr(assign({ url: url, method: Methods.POST, data: data }, args));
   };
   xr.del = function (url, args) {
-    return xr(Object.assign({ url: url, method: Methods.DELETE }, args));
+    return xr(assign({ url: url, method: Methods.DELETE }, args));
   };
 
   module.exports = xr;
