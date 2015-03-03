@@ -54,8 +54,8 @@
     method: Methods.GET,
     data: undefined,
     headers: {
-      'Accept': 'application/json',
-      'Content-Type': 'application/json'
+      Accept: "application/json",
+      "Content-Type": "application/json"
     },
     dump: JSON.stringify,
     load: JSON.parse,
