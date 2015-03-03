@@ -1,7 +1,7 @@
 xr Changelog
 ============
 
-0.1.1
+0.1.3
 -----
 
 * Able to inject promise class (will be instantiated with `new`)
