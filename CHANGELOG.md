@@ -13,3 +13,8 @@ xr Changelog
 
 * resolve anything between 200-300 instead of only 200.
 * Change dumpFn/loadFn to dump/load.
+
+0.0.10
+------
+
+* HackerNews debut!
