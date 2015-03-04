@@ -66,13 +66,12 @@
     return new (args && args.promise ? args.promise : defaults.promise)(function (resolve, reject) {
       var opts = assign({}, defaults, args);
       var xhr = new XMLHttpRequest();
-      var params = getParams(opts.params, opts.url);
 
-      xhr.open(opts.method, params ? "" + opts.url.split("?")[0] + "?" + params : opts.url, true);
+      xhr.open(opts.method, opts.params ? "" + opts.url.split("?")[0] + "?" + getParams(opts.params) : opts.url, true);
       xhr.addEventListener("load", function () {
-        if (xhr.status >= 200 && xhr.status < 300) resolve(assign({}, res(xhr), {
+        return xhr.status >= 200 && xhr.status < 300 ? resolve(assign({}, res(xhr), {
           data: opts.load(xhr.response)
-        }), false);else reject(res(xhr));
+        }), false) : reject(res(xhr));
       });
 
       for (var header in opts.headers) {

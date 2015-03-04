@@ -50,19 +50,18 @@ const defaults = {
 const xr = args => new (args && args.promise ? args.promise : defaults.promise)((resolve, reject) => {
   let opts = assign({}, defaults, args);
   let xhr = new XMLHttpRequest();
-  let params = getParams(opts.params, opts.url);
 
-  xhr.open(opts.method, params ? `${opts.url.split('?')[0]}?${params}` : opts.url, true);
-  xhr.addEventListener('load', () => {
-    if (xhr.status >= 200 && xhr.status < 300) resolve(assign({}, res(xhr), {
+  xhr.open(opts.method, opts.params ? `${opts.url.split('?')[0]}?${getParams(opts.params)}` : opts.url, true);
+  xhr.addEventListener('load', () => (xhr.status >= 200 && xhr.status < 300)
+    ? resolve(assign({}, res(xhr), {
       data: opts.load(xhr.response)
-    }), false);
-    else reject(res(xhr));
-  });
-
+    }), false)
+    : reject(res(xhr))
+  );
+  
   for (let header in opts.headers) xhr.setRequestHeader(header, opts.headers[header]);
   for (let event in opts.events) xhr.addEventListener(event, opts.events[event].bind(null, xhr), false);
-
+  
   xhr.send(typeof opts.data === 'object' ? opts.dump(opts.data) : opts.data);
 });
 
