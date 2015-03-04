@@ -20,26 +20,29 @@ available), and adds pretty much no overhead over the standard XHR API.
 Quickstart
 ----------
 
-    xr.get('/api/items', {take: 5})
-      .then(res => console.log(res.data));
+```javascript
+xr.get('/api/items', {take: 5})
+  .then(res => console.log(res.data));
     
-    xr.post('/api/item', {name: 'hello'})
-      .then(res => console.log("new item", res.data));
+xr.post('/api/item', {name: 'hello'})
+  .then(res => console.log("new item", res.data));
+```
 
 Extended syntax:
 
-    xr({
-      method: xr.Methods.GET,
-      url: '/api/items',
-      params: {take: 5},
-      events: {
-        progress: (xhr, xhrProgressEvent) => {
-          console.log("xhr", xhr);
-          console.log("progress", xhrProgressEvent);
-        }
-      }
-    });
-    
+```javascript
+xr({
+  method: xr.Methods.GET,
+  url: '/api/items',
+  params: {take: 5},
+  events: {
+    progress: (xhr, xhrProgressEvent) => {
+      console.log("xhr", xhr);
+      console.log("progress", xhrProgressEvent);
+    }
+  }
+});
+```
 
 API is simple, for now consult source files.
 
@@ -55,7 +58,9 @@ Alias Methods
 
 You can do some quick aliases to requests, for instance:
     
-    xr.get('/my-url')
+```javascript
+xr.get('/my-url')
+```
 
 Requirements
 ------------
