@@ -13,8 +13,6 @@
    * License: BSD
    */
 
-  if (!Promise) console.error("Promise not found, xr will not work, please use a shim.");
-
   var res = function (xhr) {
     return {
       status: xhr.status,
@@ -47,7 +45,9 @@
     GET: "GET",
     POST: "POST",
     PUT: "PUT",
-    DELETE: "DELETE"
+    DELETE: "DELETE",
+    PATCH: "PATCH",
+    OPTIONS: "OPTIONS"
   };
 
   var defaults = {
@@ -96,8 +96,14 @@
   xr.post = function (url, data, args) {
     return xr(assign({ url: url, method: Methods.POST, data: data }, args));
   };
+  xr.patch = function (url, data, args) {
+    return xr(assign({ url: url, method: Methods.PATCH, data: data }, args));
+  };
   xr.del = function (url, args) {
     return xr(assign({ url: url, method: Methods.DELETE }, args));
+  };
+  xr.options = function (url, args) {
+    return xr(assign({ url: url, method: Methods.OPTIONS }, args));
   };
 
   module.exports = xr;
