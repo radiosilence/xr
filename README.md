@@ -44,7 +44,7 @@ xr({
 });
 ```
 
-API is simple, for now consult source files.
+API is simple, for now consult [source](https://github.com/radiosilence/xr/blob/master/src/xr.js).
 
 Features
 --------
