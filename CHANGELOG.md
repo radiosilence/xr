@@ -6,6 +6,7 @@ xr Changelog
 
 * Remove Promise warning, because it would be annoying if you're providing your
   own promises.
+* Add PATCH and OPTIONS.
 
 0.1.3
 -----

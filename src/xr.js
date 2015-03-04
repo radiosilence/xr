@@ -30,7 +30,9 @@ const Methods = {
   GET: 'GET',
   POST: 'POST',
   PUT: 'PUT',
-  DELETE: 'DELETE'
+  DELETE: 'DELETE',
+  PATCH: 'PATCH',
+  OPTIONS: 'OPTIONS'
 };
 
 const defaults = {
@@ -71,6 +73,8 @@ xr.defaults = defaults;
 xr.get = (url, params, args) => xr(assign({url: url, method: Methods.GET, params: params}, args));
 xr.put = (url, data, args) => xr(assign({url: url, method: Methods.PUT, data: data}, args));
 xr.post = (url, data, args) => xr(assign({url: url, method: Methods.POST, data: data}, args));
+xr.patch = (url, data, args) => xr(assign({url: url, method: Methods.PATCH, data: data}, args));
 xr.del = (url, args) => xr(assign({url: url, method: Methods.DELETE}, args));
+xr.options = (url, args) => xr(assign({url: url, method: Methods.OPTIONS}, args));
 
 export default xr;
