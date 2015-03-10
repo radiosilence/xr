@@ -5,7 +5,8 @@
   "main": "xr.js",
   "scripts": {
     "build": "babel --modules umd -o xr.js --loose all src/xr.js",
-    "prepublish": "npm run build"
+    "update-authors": "git log --format='%aN <%aE>' | sort -u > AUTHORS",
+    "prepublish": "npm run build; npm run update-authors"
   },
   "repository": {
     "type": "git",
