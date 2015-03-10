@@ -75,7 +75,7 @@ const xr = args => promise(args, (resolve, reject) => {
   for (let event in opts.events) xhr.addEventListener(event, opts.events[event].bind(null, xhr), false);
 
   xhr.send(
-    (typeof opts.data === 'object' && !(opts.data instanceof File))
+    (typeof opts.data === 'object' && !opts.raw)
       ? opts.dump(opts.data)
       : opts.data
   );
