@@ -47,22 +47,38 @@ const defaults = {
   promise: Promise
 };
 
-const xr = args => new (args && args.promise ? args.promise : defaults.promise)((resolve, reject) => {
+const promise = (args, fn) => new (
+  (args && args.promise)
+    ? args.promise
+    : defaults.promise
+)(fn);
+
+const xr = args => promise(args, (resolve, reject) => {
   let opts = assign({}, defaults, args);
   let xhr = new XMLHttpRequest();
 
-  xhr.open(opts.method, opts.params ? `${opts.url.split('?')[0]}?${getParams(opts.params)}` : opts.url, true);
+  xhr.open(
+    opts.method,
+    opts.params
+      ? `${opts.url.split('?')[0]}?${getParams(opts.params)}`
+      : opts.url,
+    true
+  );
   xhr.addEventListener('load', () => (xhr.status >= 200 && xhr.status < 300)
     ? resolve(assign({}, res(xhr), {
       data: opts.load(xhr.response)
     }), false)
     : reject(res(xhr))
   );
-  
+
   for (let header in opts.headers) xhr.setRequestHeader(header, opts.headers[header]);
   for (let event in opts.events) xhr.addEventListener(event, opts.events[event].bind(null, xhr), false);
-  
-  xhr.send(typeof opts.data === 'object' ? opts.dump(opts.data) : opts.data);
+
+  xhr.send(
+    (typeof opts.data === 'object' && !opts.raw)
+      ? opts.dump(opts.data)
+      : opts.data
+  );
 });
 
 xr.assign = assign;
