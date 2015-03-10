@@ -1,6 +1,6 @@
 {
   "name": "xr",
-  "version": "0.1.5",
+  "version": "0.1.6",
   "description": "Ultra-simple wrapper around XMLHttpRequest.",
   "main": "xr.js",
   "scripts": {

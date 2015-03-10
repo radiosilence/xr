@@ -4,7 +4,8 @@ xr Changelog
 0.1.5
 -----
 
-* Allowing data to be sent directly using opts.raw.
+* Allowing data to be sent directly using opts.raw
+* AUTHORS text file
 
 0.1.4
 -----
