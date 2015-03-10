@@ -47,11 +47,23 @@ const defaults = {
   promise: Promise
 };
 
-const xr = args => new (args && args.promise ? args.promise : defaults.promise)((resolve, reject) => {
+const promise = (args, fn) => new (
+  (args && args.promise)
+    ? args.promise
+    : defaults.promise
+)(fn);
+
+const xr = args => promise(args, (resolve, reject) => {
   let opts = assign({}, defaults, args);
   let xhr = new XMLHttpRequest();
 
-  xhr.open(opts.method, opts.params ? `${opts.url.split('?')[0]}?${getParams(opts.params)}` : opts.url, true);
+  xhr.open(
+    opts.method,
+    opts.params
+      ? `${opts.url.split('?')[0]}?${getParams(opts.params)}`
+      : opts.url,
+    true
+  );
   xhr.addEventListener('load', () => (xhr.status >= 200 && xhr.status < 300)
     ? resolve(assign({}, res(xhr), {
       data: opts.load(xhr.response)
@@ -62,8 +74,11 @@ const xr = args => new (args && args.promise ? args.promise : defaults.promise)(
   for (let header in opts.headers) xhr.setRequestHeader(header, opts.headers[header]);
   for (let event in opts.events) xhr.addEventListener(event, opts.events[event].bind(null, xhr), false);
 
-  if (opts.data instanceof File) xhr.send(opts.data);
-  else xhr.send(typeof opts.data === 'object' ? opts.dump(opts.data) : opts.data);
+  xhr.send(
+    (typeof opts.data === 'object' && !(opts.data instanceof File))
+      ? opts.dump(opts.data)
+      : opts.data
+  );
 });
 
 xr.assign = assign;
