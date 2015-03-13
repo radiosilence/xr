@@ -50,6 +50,7 @@ Custom promise class (will be instantiated with `new`):
 xr.get('/url', {}, {
   promise: myPromiseClass
 });
+```
 
 Raw mode (data is not dumped/loaded):
 
