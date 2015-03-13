@@ -66,7 +66,9 @@ const xr = args => promise(args, (resolve, reject) => {
   );
   xhr.addEventListener('load', () => (xhr.status >= 200 && xhr.status < 300)
     ? resolve(assign({}, res(xhr), {
-      data: opts.load(xhr.response)
+      data: xhr.response
+        ? opts.load(xhr.response)
+        : null
     }), false)
     : reject(res(xhr))
   );

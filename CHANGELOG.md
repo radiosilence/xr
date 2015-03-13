@@ -1,6 +1,11 @@
 xr Changelog
 ============
 
+0.1.6
+-----
+
+* Fix bug where empty response causes exception.
+
 0.1.5
 -----
 
