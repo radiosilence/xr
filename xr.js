@@ -74,7 +74,7 @@
       xhr.open(opts.method, opts.params ? "" + opts.url.split("?")[0] + "?" + getParams(opts.params) : opts.url, true);
       xhr.addEventListener("load", function () {
         return xhr.status >= 200 && xhr.status < 300 ? resolve(assign({}, res(xhr), {
-          data: xhr.response ? opts.load(xhr.response) : null
+          data: xhr.response ? !opts.raw ? opts.load(xhr.response) : xhr.response : null
         }), false) : reject(res(xhr));
       });
 

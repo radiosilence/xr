@@ -44,6 +44,34 @@ xr({
 });
 ```
 
+Custom promise class (will be instantiated with `new`):
+
+```javascript
+xr.get('/url', {}, {
+  promise: myPromiseClass
+});
+
+Raw mode (data is not dumped/loaded):
+
+```javascript
+xr.put('/url', 'some data', {
+  raw: true
+});
+```
+
+Custom dump/load:
+
+```javascript
+xr.post('/url', {'some': 'data'}, {
+  dump: data => msgpack.encode(data),
+  load: data => msgpack.decode(data)
+});
+```
+
+
+
+
+
 API is simple, for now consult [source](https://github.com/radiosilence/xr/blob/master/src/xr.js).
 
 Features
