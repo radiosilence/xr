@@ -1,11 +1,12 @@
 xr Changelog
 ============
 
-master
+0.1.7
 ------
 
 * Raw mode applies to sending and loading.
 * Updated readme with more examples.
+* Fix bug where data wasn't loaded.
 
 0.1.6
 -----
