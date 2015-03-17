@@ -25,6 +25,6 @@
   },
   "homepage": "https://github.com/radiosilence/xr",
   "devDependencies": {
-    "babel": "^4.6.5"
+    "babel": "^4.7.13"
   }
 }

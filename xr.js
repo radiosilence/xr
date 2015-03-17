@@ -5,13 +5,13 @@
     factory(exports, module);
   }
 })(function (exports, module) {
-  "use strict";
-
   /**
    * xr (c) James Cleveland 2015
    * URL: https://github.com/radiosilence/xr
    * License: BSD
    */
+
+  "use strict";
 
   var res = function (xhr) {
     return {
