@@ -64,6 +64,15 @@ const xr = args => promise(args, (resolve, reject) => {
       : opts.url,
     true
   );
+  
+  xhr.addEventListener("error", function () {
+    reject(res(xhr));
+  });
+
+  xhr.addEventListener("abort", function () {
+    reject(res(xhr));
+  });
+  
   xhr.addEventListener('load', () => (xhr.status >= 200 && xhr.status < 300)
     ? resolve(assign({}, res(xhr), {
       data: xhr.response
