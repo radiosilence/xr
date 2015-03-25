@@ -35,6 +35,17 @@ const Methods = {
   OPTIONS: 'OPTIONS'
 };
 
+const Events = {
+  READY_STATE_CHANGE: 'readystatechange',
+  LOAD_START: 'loadstart',
+  PROGRESS: 'progress',
+  ABORT: 'abort',
+  ERROR: 'error',
+  LOAD: 'load',
+  TIMEOUT: 'timeout',
+  LOAD_END: 'loadend'
+};
+
 const defaults = {
   method: Methods.GET,
   data: undefined,
@@ -65,15 +76,8 @@ const xr = args => promise(args, (resolve, reject) => {
     true
   );
   
-  xhr.addEventListener("error", function () {
-    reject(res(xhr));
-  });
 
-  xhr.addEventListener("abort", function () {
-    reject(res(xhr));
-  });
-  
-  xhr.addEventListener('load', () => (xhr.status >= 200 && xhr.status < 300)
+  xhr.addEventListener(Events.LOAD, () => (xhr.status >= 200 && xhr.status < 300)
     ? resolve(assign({}, res(xhr), {
       data: xhr.response
         ? !opts.raw
@@ -83,6 +87,10 @@ const xr = args => promise(args, (resolve, reject) => {
     }), false)
     : reject(res(xhr))
   );
+
+  xhr.addEventListener(Events.ABORT, () => reject(res(xhr)));
+  xhr.addEventListener(Events.ERROR, () => reject(res(xhr)));
+  xhr.addEventListener(Events.TIMEOUT, () => reject(res(xhr)));
 
   for (let header in opts.headers) xhr.setRequestHeader(header, opts.headers[header]);
   for (let event in opts.events) xhr.addEventListener(event, opts.events[event].bind(null, xhr), false);
@@ -96,6 +104,7 @@ const xr = args => promise(args, (resolve, reject) => {
 
 xr.assign = assign;
 xr.Methods = Methods;
+xr.Events = Events;
 xr.defaults = defaults;
 
 xr.get = (url, params, args) => xr(assign({url: url, method: Methods.GET, params: params}, args));
