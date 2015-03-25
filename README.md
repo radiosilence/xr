@@ -36,7 +36,7 @@ xr({
   url: '/api/items',
   params: {take: 5},
   events: {
-    progress: (xhr, xhrProgressEvent) => {
+    [xr.Events.PROGRESS]: (xhr, xhrProgressEvent) => {
       console.log("xhr", xhr);
       console.log("progress", xhrProgressEvent);
     }
