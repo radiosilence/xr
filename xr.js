@@ -50,6 +50,17 @@
     OPTIONS: "OPTIONS"
   };
 
+  var Events = {
+    READY_STATE_CHANGE: "readystatechange",
+    LOAD_START: "loadstart",
+    PROGRESS: "progress",
+    ABORT: "abort",
+    ERROR: "error",
+    LOAD: "load",
+    TIMEOUT: "timeout",
+    LOAD_END: "loadend"
+  };
+
   var defaults = {
     method: Methods.GET,
     data: undefined,
@@ -72,10 +83,21 @@
       var xhr = new XMLHttpRequest();
 
       xhr.open(opts.method, opts.params ? "" + opts.url.split("?")[0] + "?" + getParams(opts.params) : opts.url, true);
-      xhr.addEventListener("load", function () {
+
+      xhr.addEventListener(Events.LOAD, function () {
         return xhr.status >= 200 && xhr.status < 300 ? resolve(assign({}, res(xhr), {
           data: xhr.response ? !opts.raw ? opts.load(xhr.response) : xhr.response : null
         }), false) : reject(res(xhr));
+      });
+
+      xhr.addEventListener(Events.ABORT, function () {
+        return reject(res(xhr));
+      });
+      xhr.addEventListener(Events.ERROR, function () {
+        return reject(res(xhr));
+      });
+      xhr.addEventListener(Events.TIMEOUT, function () {
+        return reject(res(xhr));
       });
 
       for (var header in opts.headers) {
@@ -88,6 +110,7 @@
 
   xr.assign = assign;
   xr.Methods = Methods;
+  xr.Events = Events;
   xr.defaults = defaults;
 
   xr.get = function (url, params, args) {
