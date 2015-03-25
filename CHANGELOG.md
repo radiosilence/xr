@@ -1,6 +1,12 @@
 xr Changelog
 ============
 
+0.1.8
+-----
+
+* Handling abort/error/timeout with a rejection.
+* Exposing `xr.Events` which are constants based on the XMLHttpRequest spec.
+
 0.1.7
 ------
 
