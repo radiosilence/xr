@@ -1,6 +1,11 @@
 xr Changelog
 ============
 
+0.1.10
+------
+
+* Added ability to override XMLHttpRequest with xmlHttpRequest option.
+
 0.1.9
 -----
 

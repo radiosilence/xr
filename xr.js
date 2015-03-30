@@ -70,6 +70,9 @@
     },
     dump: JSON.stringify,
     load: JSON.parse,
+    xmlHttpRequest: function () {
+      return new XMLHttpRequest();
+    },
     promise: function (fn) {
       return new Promise(fn);
     }
@@ -88,7 +91,7 @@
   var xr = function (args) {
     return promise(args, function (resolve, reject) {
       var opts = assign({}, defaults, config, args);
-      var xhr = new XMLHttpRequest();
+      var xhr = opts.xmlHttpRequest();
 
       xhr.open(opts.method, opts.params ? "" + opts.url.split("?")[0] + "?" + getParams(opts.params) : opts.url, true);
 

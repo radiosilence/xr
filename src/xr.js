@@ -55,6 +55,7 @@ const defaults = {
   },
   dump: JSON.stringify,
   load: JSON.parse,
+  xmlHttpRequest: () => new XMLHttpRequest(),
   promise: fn => new Promise(fn)
 };
 
@@ -72,7 +73,7 @@ const promise = (args, fn) => (
 
 const xr = args => promise(args, (resolve, reject) => {
   let opts = assign({}, defaults, config, args);
-  let xhr = new XMLHttpRequest();
+  let xhr = opts.xmlHttpRequest();
 
   xhr.open(
     opts.method,
