@@ -55,17 +55,23 @@ const defaults = {
   },
   dump: JSON.stringify,
   load: JSON.parse,
-  promise: Promise
+  promise: fn => new Promise(fn)
 };
 
-const promise = (args, fn) => new (
+let config = {};
+
+const configure = (opts) => {
+  config = assign({}, config, opts);
+};
+
+const promise = (args, fn) => (
   (args && args.promise)
     ? args.promise
-    : defaults.promise
+    : (config.promise || defaults.promise)
 )(fn);
 
 const xr = args => promise(args, (resolve, reject) => {
-  let opts = assign({}, defaults, args);
+  let opts = assign({}, defaults, config, args);
   let xhr = new XMLHttpRequest();
 
   xhr.open(
@@ -103,6 +109,7 @@ const xr = args => promise(args, (resolve, reject) => {
 });
 
 xr.assign = assign;
+xr.configure = configure;
 xr.Methods = Methods;
 xr.Events = Events;
 xr.defaults = defaults;

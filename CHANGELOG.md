@@ -1,6 +1,15 @@
 xr Changelog
 ============
 
+0.1.9
+-----
+
+* Added xr.configure, a function to globally configure xr.
+* Slight change of the way Promises are passed into configuration,
+  where `new` (it being a class) is not assumed necessary. They are
+  now passed in a function which takes one argument (the first argument
+  to the promise), and returns a Promise, e.g. `fn => new Promise(fn)`.
+
 0.1.8
 -----
 

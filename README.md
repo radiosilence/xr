@@ -14,8 +14,9 @@ For instance, the library is by default set up to send/receive JSON (with
 the associated headers and parser/dumper already set up), but if you wanted to
 use something like XML, it's easy enough to override that with a few lines.
 
-It's lightweight, has no dependencies (other than having ES6 polyfills
-available), and adds pretty much no overhead over the standard XHR API.
+It's lightweight, has no dependencies (other than having either Promise
+in the global namespace or provided via `xr.config`), and adds pretty
+much no overhead over the standard XHR API.
 
 Quickstart
 ----------
@@ -44,11 +45,11 @@ xr({
 });
 ```
 
-Custom promise class (will be instantiated with `new`):
+Custom promise:
 
 ```javascript
 xr.get('/url', {}, {
-  promise: myPromiseClass
+  promise: fn => new myPromiseClass(fn)
 });
 ```
 
@@ -69,8 +70,19 @@ xr.post('/url', {'some': 'data'}, {
 });
 ```
 
+Global configuration
+--------------------
 
+One thing that I've always found irritating with libraries it that if you want to 
+override the defaults, you have to do it per-request, or wrap the libraries.
 
+With XR, this is simple, as you can globally configure the module for your project.
+
+```javascript
+xr.configure({
+  promise: (fn) => new myPromise(fn)
+})
+```
 
 
 API is simple, for now consult [source](https://github.com/radiosilence/xr/blob/master/src/xr.js).

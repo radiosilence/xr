@@ -70,16 +70,24 @@
     },
     dump: JSON.stringify,
     load: JSON.parse,
-    promise: Promise
+    promise: function (fn) {
+      return new Promise(fn);
+    }
+  };
+
+  var config = {};
+
+  var configure = function (opts) {
+    config = assign({}, config, opts);
   };
 
   var promise = function (args, fn) {
-    return new (args && args.promise ? args.promise : defaults.promise)(fn);
+    return (args && args.promise ? args.promise : config.promise || defaults.promise)(fn);
   };
 
   var xr = function (args) {
     return promise(args, function (resolve, reject) {
-      var opts = assign({}, defaults, args);
+      var opts = assign({}, defaults, config, args);
       var xhr = new XMLHttpRequest();
 
       xhr.open(opts.method, opts.params ? "" + opts.url.split("?")[0] + "?" + getParams(opts.params) : opts.url, true);
@@ -109,6 +117,7 @@
   };
 
   xr.assign = assign;
+  xr.configure = configure;
   xr.Methods = Methods;
   xr.Events = Events;
   xr.defaults = defaults;
