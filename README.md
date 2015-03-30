@@ -80,7 +80,7 @@ With XR, this is simple, as you can globally configure the module for your proje
 
 ```javascript
 xr.configure({
-  promise: (fn) => new myPromise(fn)
+  promise: fn => new myPromise(fn)
 })
 ```
 
