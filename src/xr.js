@@ -101,6 +101,7 @@ const xr = args => promise(args, (resolve, reject) => {
 
   for (let header in opts.headers) xhr.setRequestHeader(header, opts.headers[header]);
   for (let event in opts.events) xhr.addEventListener(event, opts.events[event].bind(null, xhr), false);
+  for (let event in opts.uploadEvents) xhr.upload.addEventListener(event, opts.uploadEvents[event].bind(null, xhr), false);
 
   xhr.send(
     (typeof opts.data === 'object' && !opts.raw)
