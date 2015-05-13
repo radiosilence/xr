@@ -105,7 +105,7 @@ const xr = args => promise(args, (resolve, reject) => {
       ? opts.dump(opts.data)
       : opts.data;
 
-  data
+  data !== undefined
     ? xhr.send(data)
     : xhr.send();
 });
