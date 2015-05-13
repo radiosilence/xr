@@ -5,6 +5,7 @@ xr Changelog
 ------
 
 * Added ability to override XMLHttpRequest with xmlHttpRequest option.
+* Fix bug with IE where sending `undefined` with a DELETE request would send the string.
 
 0.1.9
 -----

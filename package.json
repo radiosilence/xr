@@ -1,6 +1,6 @@
 {
   "name": "xr",
-  "version": "0.1.9",
+  "version": "0.1.10",
   "description": "Ultra-simple wrapper around XMLHttpRequest.",
   "main": "xr.js",
   "scripts": {
@@ -25,6 +25,6 @@
   },
   "homepage": "https://github.com/radiosilence/xr",
   "devDependencies": {
-    "babel": "^4.7.13"
+    "babel": "^5.3.1"
   }
 }

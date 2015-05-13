@@ -83,7 +83,6 @@ const xr = args => promise(args, (resolve, reject) => {
     true
   );
   
-
   xhr.addEventListener(Events.LOAD, () => (xhr.status >= 200 && xhr.status < 300)
     ? resolve(assign({}, res(xhr), {
       data: xhr.response
@@ -102,11 +101,13 @@ const xr = args => promise(args, (resolve, reject) => {
   for (let header in opts.headers) xhr.setRequestHeader(header, opts.headers[header]);
   for (let event in opts.events) xhr.addEventListener(event, opts.events[event].bind(null, xhr), false);
 
-  xhr.send(
-    (typeof opts.data === 'object' && !opts.raw)
+  let data = (typeof opts.data === 'object' && !opts.raw)
       ? opts.dump(opts.data)
-      : opts.data
-  );
+      : opts.data;
+
+  data
+    ? xhr.send(data)
+    : xhr.send();
 });
 
 xr.assign = assign;
