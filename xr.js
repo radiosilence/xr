@@ -123,7 +123,7 @@
         xhr.addEventListener(_event, opts.events[_event].bind(null, xhr), false);
       }var data = typeof opts.data === 'object' && !opts.raw ? opts.dump(opts.data) : opts.data;
 
-      data ? xhr.send(data) : xhr.send();
+      data !== undefined ? xhr.send(data) : xhr.send();
     });
   };
 
