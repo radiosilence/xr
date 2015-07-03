@@ -11,7 +11,8 @@ const res = xhr => ({
 });
 
 const assign = function(t, s) {
-  let l = arguments.length, i = 1;
+  const l = arguments.length;
+  let i = 1;
   while (i < l) {
     let s = arguments[i++];
     for (let k in s) { t[k] = s[k]; }
@@ -20,7 +21,7 @@ const assign = function(t, s) {
 };
 
 const getParams = (data, url) => {
-  let ret = [];
+  const ret = [];
   for (let k in data) ret.push(`${encodeURIComponent(k)}=${encodeURIComponent(data[k])}`);
   if (url && url.split('?').length > 1) ret.push(url.split('?')[1]);
   return ret.join('&');
@@ -72,8 +73,8 @@ const promise = (args, fn) => (
 )(fn);
 
 const xr = args => promise(args, (resolve, reject) => {
-  let opts = assign({}, defaults, config, args);
-  let xhr = opts.xmlHttpRequest();
+  const opts = assign({}, defaults, config, args);
+  const xhr = opts.xmlHttpRequest();
 
   xhr.open(
     opts.method,
@@ -82,7 +83,7 @@ const xr = args => promise(args, (resolve, reject) => {
       : opts.url,
     true
   );
-  
+
   xhr.addEventListener(Events.LOAD, () => (xhr.status >= 200 && xhr.status < 300)
     ? resolve(assign({}, res(xhr), {
       data: xhr.response
@@ -98,16 +99,15 @@ const xr = args => promise(args, (resolve, reject) => {
   xhr.addEventListener(Events.ERROR, () => reject(res(xhr)));
   xhr.addEventListener(Events.TIMEOUT, () => reject(res(xhr)));
 
-  for (let header in opts.headers) xhr.setRequestHeader(header, opts.headers[header]);
-  for (let event in opts.events) xhr.addEventListener(event, opts.events[event].bind(null, xhr), false);
+  for (const header in opts.headers) xhr.setRequestHeader(header, opts.headers[header]);
+  for (const event in opts.events) xhr.addEventListener(event, opts.events[event].bind(null, xhr), false);
 
-  let data = (typeof opts.data === 'object' && !opts.raw)
+  const data = (typeof opts.data === 'object' && !opts.raw)
       ? opts.dump(opts.data)
       : opts.data;
 
-  data !== undefined
-    ? xhr.send(data)
-    : xhr.send();
+  if (data !== undefined) xhr.send(data);
+  else xhr.send();
 });
 
 xr.assign = assign;

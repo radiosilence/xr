@@ -25,6 +25,9 @@
   },
   "homepage": "https://github.com/radiosilence/xr",
   "devDependencies": {
-    "babel": "^5.3.1"
+    "babel": "^5.3.1",
+    "babel-eslint": "^3.1.20",
+    "eslint": "^0.24.0",
+    "eslint-plugin-react": "^2.6.4"
   }
 }

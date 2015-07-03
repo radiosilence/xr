@@ -28,8 +28,8 @@
   };
 
   var assign = function assign(t, s) {
-    var l = arguments.length,
-        i = 1;
+    var l = arguments.length;
+    var i = 1;
     while (i < l) {
       var _s = arguments[i++];
       for (var k in _s) {
@@ -123,7 +123,7 @@
         xhr.addEventListener(_event, opts.events[_event].bind(null, xhr), false);
       }var data = typeof opts.data === 'object' && !opts.raw ? opts.dump(opts.data) : opts.data;
 
-      data !== undefined ? xhr.send(data) : xhr.send();
+      if (data !== undefined) xhr.send(data);else xhr.send();
     });
   };
 
