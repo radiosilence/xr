@@ -13,18 +13,25 @@ function res(xhr) {
 }
 
 function assign(l, ...rs) {
-  rs.forEach(r => {
-    Object.keys(r).forEach(k => {
+  for (const i in rs) {
+    if (!{}.hasOwnProperty.call(rs, i)) continue;
+    const r = rs[i];
+    if (typeof r !== 'object') continue;
+    for (const k in r) {
+      if (!{}.hasOwnProperty.call(r, k)) continue;
       l[k] = r[k];
-    });
-  });
+    }
+  }
   return l;
 }
 
 function urlEncode(params) {
-  return Object.keys(params)
-    .map(k => `${encodeURIComponent(k)}=${encodeURIComponent(params[k])}`)
-    .join('&');
+  const paramStrings = [];
+  for (const k in params) {
+    if (!{}.hasOwnProperty.call(params, k)) continue;
+    paramStrings.push(`${encodeURIComponent(k)}=${encodeURIComponent(params[k])}`);
+  }
+  return paramStrings.join('&');
 }
 
 const Methods = {
@@ -102,12 +109,15 @@ const xr = args => promise(args, (resolve, reject) => {
   xhr.addEventListener(Events.ERROR, () => reject(res(xhr)));
   xhr.addEventListener(Events.TIMEOUT, () => reject(res(xhr)));
 
-  opts.headers
-    .forEach((header, name) => xhr.setRequestHeader(name, header));
+  for (const k in opts.headers) {
+    if (!{}.hasOwnProperty.call(opts.headers, k)) continue;
+    xhr.setRequestHeader(k, opts.headers[k]);
+  }
 
-  opts.events
-    .forEach((event, name) => xhr.addEventListener(name, event.bind(null, xhr), false));
-
+  for (const k in opts.events) {
+    if (!{}.hasOwnProperty.call(opts.events, k)) continue;
+    xhr.addEventListener(k, opts.events[k].bind(null, xhr), false);
+  }
 
   const data = (typeof opts.data === 'object' && !opts.raw)
       ? opts.dump(opts.data)

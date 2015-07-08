@@ -32,18 +32,25 @@
       rs[_key - 1] = arguments[_key];
     }
 
-    rs.forEach(function (r) {
-      Object.keys(r).forEach(function (k) {
+    for (var i in rs) {
+      if (!({}).hasOwnProperty.call(rs, i)) continue;
+      var r = rs[i];
+      if (typeof r !== 'object') continue;
+      for (var k in r) {
+        if (!({}).hasOwnProperty.call(r, k)) continue;
         l[k] = r[k];
-      });
-    });
+      }
+    }
     return l;
   }
 
   function urlEncode(params) {
-    return Object.keys(params).map(function (k) {
-      return encodeURIComponent(k) + '=' + encodeURIComponent(params[k]);
-    }).join('&');
+    var paramStrings = [];
+    for (var k in params) {
+      if (!({}).hasOwnProperty.call(params, k)) continue;
+      paramStrings.push(encodeURIComponent(k) + '=' + encodeURIComponent(params[k]));
+    }
+    return paramStrings.join('&');
   }
 
   var Methods = {
@@ -122,13 +129,15 @@
         return reject(res(xhr));
       });
 
-      opts.headers.forEach(function (header, name) {
-        return xhr.setRequestHeader(name, header);
-      });
+      for (var k in opts.headers) {
+        if (!({}).hasOwnProperty.call(opts.headers, k)) continue;
+        xhr.setRequestHeader(k, opts.headers[k]);
+      }
 
-      opts.events.forEach(function (event, name) {
-        return xhr.addEventListener(name, event.bind(null, xhr), false);
-      });
+      for (var k in opts.events) {
+        if (!({}).hasOwnProperty.call(opts.events, k)) continue;
+        xhr.addEventListener(k, opts.events[k].bind(null, xhr), false);
+      }
 
       var data = typeof opts.data === 'object' && !opts.raw ? opts.dump(opts.data) : opts.data;
 
