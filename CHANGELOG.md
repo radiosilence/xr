@@ -1,6 +1,12 @@
 xr Changelog
 ============
 
+0.1.11
+------
+
+* Refactored according to the [Airbnb JavaScript Style Guide](https://github.com/airbnb/javascript).
+
+
 0.1.10
 ------
 

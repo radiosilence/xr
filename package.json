@@ -1,6 +1,6 @@
 {
   "name": "xr",
-  "version": "0.1.10",
+  "version": "0.1.11",
   "description": "Ultra-simple wrapper around XMLHttpRequest.",
   "main": "xr.js",
   "scripts": {
@@ -25,8 +25,8 @@
   },
   "homepage": "https://github.com/radiosilence/xr",
   "devDependencies": {
-    "babel": "^5.3.1",
-    "babel-eslint": "^3.1.20",
+    "babel": "^5.6.14",
+    "babel-eslint": "^3.1.23",
     "eslint": "^0.24.0",
     "eslint-plugin-react": "^2.6.4"
   }

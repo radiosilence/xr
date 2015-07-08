@@ -4,28 +4,28 @@
  * License: BSD
  */
 
-const res = xhr => ({
-  status: xhr.status,
-  response: xhr.response,
-  xhr: xhr
-});
+function res(xhr) {
+  return {
+    status: xhr.status,
+    response: xhr.response,
+    xhr: xhr
+  };
+}
 
-const assign = function(t, s) {
-  const l = arguments.length;
-  let i = 1;
-  while (i < l) {
-    let s = arguments[i++];
-    for (let k in s) { t[k] = s[k]; }
-  }
-  return t;
-};
+function assign(l, ...rs) {
+  rs.forEach(r => {
+    Object.keys(r).forEach(k => {
+      l[k] = r[k];
+    });
+  });
+  return l;
+}
 
-const getParams = (data, url) => {
-  const ret = [];
-  for (let k in data) ret.push(`${encodeURIComponent(k)}=${encodeURIComponent(data[k])}`);
-  if (url && url.split('?').length > 1) ret.push(url.split('?')[1]);
-  return ret.join('&');
-};
+function urlEncode(params) {
+  return Object.keys(params)
+    .map(k => `${encodeURIComponent(k)}=${encodeURIComponent(params[k])}`)
+    .join('&');
+}
 
 const Methods = {
   GET: 'GET',
@@ -79,28 +79,35 @@ const xr = args => promise(args, (resolve, reject) => {
   xhr.open(
     opts.method,
     opts.params
-      ? `${opts.url.split('?')[0]}?${getParams(opts.params)}`
+      ? `${opts.url.split('?')[0]}?${urlEncode(opts.params)}`
       : opts.url,
     true
   );
 
-  xhr.addEventListener(Events.LOAD, () => (xhr.status >= 200 && xhr.status < 300)
-    ? resolve(assign({}, res(xhr), {
-      data: xhr.response
-        ? !opts.raw
-          ? opts.load(xhr.response)
-          : xhr.response
-        : null
-    }), false)
-    : reject(res(xhr))
-  );
+  xhr.addEventListener(Events.LOAD, () => {
+    if (xhr.status >= 200 && xhr.status < 300) {
+      let data = null;
+      if (xhr.response) {
+        data = opts.raw === true
+          ? xhr.response
+          : opts.load(xhr.response);
+      }
+      resolve(data);
+    } else {
+      reject(res(xhr));
+    }
+  });
 
   xhr.addEventListener(Events.ABORT, () => reject(res(xhr)));
   xhr.addEventListener(Events.ERROR, () => reject(res(xhr)));
   xhr.addEventListener(Events.TIMEOUT, () => reject(res(xhr)));
 
-  for (const header in opts.headers) xhr.setRequestHeader(header, opts.headers[header]);
-  for (const event in opts.events) xhr.addEventListener(event, opts.events[event].bind(null, xhr), false);
+  opts.headers
+    .forEach((header, name) => xhr.setRequestHeader(name, header));
+
+  opts.events
+    .forEach((event, name) => xhr.addEventListener(name, event.bind(null, xhr), false));
+
 
   const data = (typeof opts.data === 'object' && !opts.raw)
       ? opts.dump(opts.data)
@@ -111,6 +118,7 @@ const xr = args => promise(args, (resolve, reject) => {
 });
 
 xr.assign = assign;
+xr.urlEncode = urlEncode;
 xr.configure = configure;
 xr.Methods = Methods;
 xr.Events = Events;

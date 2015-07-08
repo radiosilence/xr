@@ -19,33 +19,32 @@
 
   'use strict';
 
-  var res = function res(xhr) {
+  function res(xhr) {
     return {
       status: xhr.status,
       response: xhr.response,
       xhr: xhr
     };
-  };
+  }
 
-  var assign = function assign(t, s) {
-    var l = arguments.length;
-    var i = 1;
-    while (i < l) {
-      var _s = arguments[i++];
-      for (var k in _s) {
-        t[k] = _s[k];
-      }
+  function assign(l) {
+    for (var _len = arguments.length, rs = Array(_len > 1 ? _len - 1 : 0), _key = 1; _key < _len; _key++) {
+      rs[_key - 1] = arguments[_key];
     }
-    return t;
-  };
 
-  var getParams = function getParams(data, url) {
-    var ret = [];
-    for (var k in data) {
-      ret.push('' + encodeURIComponent(k) + '=' + encodeURIComponent(data[k]));
-    }if (url && url.split('?').length > 1) ret.push(url.split('?')[1]);
-    return ret.join('&');
-  };
+    rs.forEach(function (r) {
+      Object.keys(r).forEach(function (k) {
+        l[k] = r[k];
+      });
+    });
+    return l;
+  }
+
+  function urlEncode(params) {
+    return Object.keys(params).map(function (k) {
+      return encodeURIComponent(k) + '=' + encodeURIComponent(params[k]);
+    }).join('&');
+  }
 
   var Methods = {
     GET: 'GET',
@@ -99,12 +98,18 @@
       var opts = assign({}, defaults, config, args);
       var xhr = opts.xmlHttpRequest();
 
-      xhr.open(opts.method, opts.params ? '' + opts.url.split('?')[0] + '?' + getParams(opts.params) : opts.url, true);
+      xhr.open(opts.method, opts.params ? opts.url.split('?')[0] + '?' + urlEncode(opts.params) : opts.url, true);
 
       xhr.addEventListener(Events.LOAD, function () {
-        return xhr.status >= 200 && xhr.status < 300 ? resolve(assign({}, res(xhr), {
-          data: xhr.response ? !opts.raw ? opts.load(xhr.response) : xhr.response : null
-        }), false) : reject(res(xhr));
+        if (xhr.status >= 200 && xhr.status < 300) {
+          var _data = null;
+          if (xhr.response) {
+            _data = opts.raw === true ? xhr.response : opts.load(xhr.response);
+          }
+          resolve(_data);
+        } else {
+          reject(res(xhr));
+        }
       });
 
       xhr.addEventListener(Events.ABORT, function () {
@@ -117,17 +122,22 @@
         return reject(res(xhr));
       });
 
-      for (var header in opts.headers) {
-        xhr.setRequestHeader(header, opts.headers[header]);
-      }for (var _event in opts.events) {
-        xhr.addEventListener(_event, opts.events[_event].bind(null, xhr), false);
-      }var data = typeof opts.data === 'object' && !opts.raw ? opts.dump(opts.data) : opts.data;
+      opts.headers.forEach(function (header, name) {
+        return xhr.setRequestHeader(name, header);
+      });
+
+      opts.events.forEach(function (event, name) {
+        return xhr.addEventListener(name, event.bind(null, xhr), false);
+      });
+
+      var data = typeof opts.data === 'object' && !opts.raw ? opts.dump(opts.data) : opts.data;
 
       if (data !== undefined) xhr.send(data);else xhr.send();
     });
   };
 
   xr.assign = assign;
+  xr.urlEncode = urlEncode;
   xr.configure = configure;
   xr.Methods = Methods;
   xr.Events = Events;
