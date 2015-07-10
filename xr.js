@@ -19,40 +19,6 @@
 
   'use strict';
 
-  function res(xhr) {
-    return {
-      status: xhr.status,
-      response: xhr.response,
-      xhr: xhr
-    };
-  }
-
-  function assign(l) {
-    for (var _len = arguments.length, rs = Array(_len > 1 ? _len - 1 : 0), _key = 1; _key < _len; _key++) {
-      rs[_key - 1] = arguments[_key];
-    }
-
-    for (var i in rs) {
-      if (!({}).hasOwnProperty.call(rs, i)) continue;
-      var r = rs[i];
-      if (typeof r !== 'object') continue;
-      for (var k in r) {
-        if (!({}).hasOwnProperty.call(r, k)) continue;
-        l[k] = r[k];
-      }
-    }
-    return l;
-  }
-
-  function urlEncode(params) {
-    var paramStrings = [];
-    for (var k in params) {
-      if (!({}).hasOwnProperty.call(params, k)) continue;
-      paramStrings.push(encodeURIComponent(k) + '=' + encodeURIComponent(params[k]));
-    }
-    return paramStrings.join('&');
-  }
-
   var Methods = {
     GET: 'GET',
     POST: 'POST',
@@ -90,17 +56,51 @@
     }
   };
 
+  function res(xhr) {
+    return {
+      status: xhr.status,
+      response: xhr.response,
+      xhr: xhr
+    };
+  }
+
+  function assign(l) {
+    for (var _len = arguments.length, rs = Array(_len > 1 ? _len - 1 : 0), _key = 1; _key < _len; _key++) {
+      rs[_key - 1] = arguments[_key];
+    }
+
+    for (var i in rs) {
+      if (!({}).hasOwnProperty.call(rs, i)) continue;
+      var r = rs[i];
+      if (typeof r !== 'object') continue;
+      for (var k in r) {
+        if (!({}).hasOwnProperty.call(r, k)) continue;
+        l[k] = r[k];
+      }
+    }
+    return l;
+  }
+
+  function urlEncode(params) {
+    var paramStrings = [];
+    for (var k in params) {
+      if (!({}).hasOwnProperty.call(params, k)) continue;
+      paramStrings.push(encodeURIComponent(k) + '=' + encodeURIComponent(params[k]));
+    }
+    return paramStrings.join('&');
+  }
+
   var config = {};
 
-  var configure = function configure(opts) {
+  function configure(opts) {
     config = assign({}, config, opts);
-  };
+  }
 
-  var promise = function promise(args, fn) {
+  function promise(args, fn) {
     return (args && args.promise ? args.promise : config.promise || defaults.promise)(fn);
-  };
+  }
 
-  var xr = function xr(args) {
+  function xr(args) {
     return promise(args, function (resolve, reject) {
       var opts = assign({}, defaults, config, args);
       var xhr = opts.xmlHttpRequest();
@@ -143,7 +143,7 @@
 
       if (data !== undefined) xhr.send(data);else xhr.send();
     });
-  };
+  }
 
   xr.assign = assign;
   xr.urlEncode = urlEncode;

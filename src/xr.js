@@ -4,35 +4,6 @@
  * License: BSD
  */
 
-function res(xhr) {
-  return {
-    status: xhr.status,
-    response: xhr.response,
-    xhr: xhr
-  };
-}
-
-function assign(l, ...rs) {
-  for (const i in rs) {
-    if (!{}.hasOwnProperty.call(rs, i)) continue;
-    const r = rs[i];
-    if (typeof r !== 'object') continue;
-    for (const k in r) {
-      if (!{}.hasOwnProperty.call(r, k)) continue;
-      l[k] = r[k];
-    }
-  }
-  return l;
-}
-
-function urlEncode(params) {
-  const paramStrings = [];
-  for (const k in params) {
-    if (!{}.hasOwnProperty.call(params, k)) continue;
-    paramStrings.push(`${encodeURIComponent(k)}=${encodeURIComponent(params[k])}`);
-  }
-  return paramStrings.join('&');
-}
 
 const Methods = {
   GET: 'GET',
@@ -67,65 +38,98 @@ const defaults = {
   promise: fn => new Promise(fn)
 };
 
+function res(xhr) {
+  return {
+    status: xhr.status,
+    response: xhr.response,
+    xhr: xhr
+  };
+}
+
+function assign(l, ...rs) {
+  for (const i in rs) {
+    if (!{}.hasOwnProperty.call(rs, i)) continue;
+    const r = rs[i];
+    if (typeof r !== 'object') continue;
+    for (const k in r) {
+      if (!{}.hasOwnProperty.call(r, k)) continue;
+      l[k] = r[k];
+    }
+  }
+  return l;
+}
+
+function urlEncode(params) {
+  const paramStrings = [];
+  for (const k in params) {
+    if (!{}.hasOwnProperty.call(params, k)) continue;
+    paramStrings.push(`${encodeURIComponent(k)}=${encodeURIComponent(params[k])}`);
+  }
+  return paramStrings.join('&');
+}
+
 let config = {};
 
-const configure = (opts) => {
+function configure(opts) {
   config = assign({}, config, opts);
-};
+}
 
-const promise = (args, fn) => (
-  (args && args.promise)
-    ? args.promise
-    : (config.promise || defaults.promise)
-)(fn);
+function promise(args, fn) {
+  return ((args && args.promise)
+      ? args.promise
+      : (config.promise || defaults.promise)
+  )(fn);
+}
 
-const xr = args => promise(args, (resolve, reject) => {
-  const opts = assign({}, defaults, config, args);
-  const xhr = opts.xmlHttpRequest();
+function xr(args) {
+  return promise(args, (resolve, reject) => {
+    const opts = assign({}, defaults, config, args);
+    const xhr = opts.xmlHttpRequest();
 
-  xhr.open(
-    opts.method,
-    opts.params
-      ? `${opts.url.split('?')[0]}?${urlEncode(opts.params)}`
-      : opts.url,
-    true
-  );
+    xhr.open(
+      opts.method,
+      opts.params
+        ? `${opts.url.split('?')[0]}?${urlEncode(opts.params)}`
+        : opts.url,
+      true
+    );
 
-  xhr.addEventListener(Events.LOAD, () => {
-    if (xhr.status >= 200 && xhr.status < 300) {
-      let data = null;
-      if (xhr.response) {
-        data = opts.raw === true
-          ? xhr.response
-          : opts.load(xhr.response);
+    xhr.addEventListener(Events.LOAD, () => {
+      if (xhr.status >= 200 && xhr.status < 300) {
+        let data = null;
+        if (xhr.response) {
+          data = opts.raw === true
+            ? xhr.response
+            : opts.load(xhr.response);
+        }
+        resolve(data);
+      } else {
+        reject(res(xhr));
       }
-      resolve(data);
-    } else {
-      reject(res(xhr));
+    });
+
+    xhr.addEventListener(Events.ABORT, () => reject(res(xhr)));
+    xhr.addEventListener(Events.ERROR, () => reject(res(xhr)));
+    xhr.addEventListener(Events.TIMEOUT, () => reject(res(xhr)));
+
+    for (const k in opts.headers) {
+      if (!{}.hasOwnProperty.call(opts.headers, k)) continue;
+      xhr.setRequestHeader(k, opts.headers[k]);
     }
+
+    for (const k in opts.events) {
+      if (!{}.hasOwnProperty.call(opts.events, k)) continue;
+      xhr.addEventListener(k, opts.events[k].bind(null, xhr), false);
+    }
+
+    const data = (typeof opts.data === 'object' && !opts.raw)
+        ? opts.dump(opts.data)
+        : opts.data;
+
+    if (data !== undefined) xhr.send(data);
+    else xhr.send();
   });
-
-  xhr.addEventListener(Events.ABORT, () => reject(res(xhr)));
-  xhr.addEventListener(Events.ERROR, () => reject(res(xhr)));
-  xhr.addEventListener(Events.TIMEOUT, () => reject(res(xhr)));
-
-  for (const k in opts.headers) {
-    if (!{}.hasOwnProperty.call(opts.headers, k)) continue;
-    xhr.setRequestHeader(k, opts.headers[k]);
-  }
-
-  for (const k in opts.events) {
-    if (!{}.hasOwnProperty.call(opts.events, k)) continue;
-    xhr.addEventListener(k, opts.events[k].bind(null, xhr), false);
-  }
-
-  const data = (typeof opts.data === 'object' && !opts.raw)
-      ? opts.dump(opts.data)
-      : opts.data;
-
-  if (data !== undefined) xhr.send(data);
-  else xhr.send();
-});
+}
 
 xr.assign = assign;
 xr.urlEncode = urlEncode;
