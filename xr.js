@@ -110,8 +110,8 @@
       xhr.addEventListener(Events.LOAD, function () {
         if (xhr.status >= 200 && xhr.status < 300) {
           var _data = null;
-          if (xhr.response) {
-            _data = opts.raw === true ? xhr.response : opts.load(xhr.response);
+          if (xhr.responseText) {
+            _data = opts.raw === true ? xhr.responseText : opts.load(xhr.responseText);
           }
           resolve(_data);
         } else {

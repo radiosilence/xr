@@ -1,6 +1,11 @@
 xr Changelog
 ============
 
+0.1.13
+------
+
+* Using xhr.responseText instead of xhr.response to fix an issue with IE9.
+
 0.1.12
 ------
 

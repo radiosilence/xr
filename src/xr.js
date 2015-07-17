@@ -97,10 +97,10 @@ function xr(args) {
     xhr.addEventListener(Events.LOAD, () => {
       if (xhr.status >= 200 && xhr.status < 300) {
         let data = null;
-        if (xhr.response) {
+        if (xhr.responseText) {
           data = opts.raw === true
-            ? xhr.response
-            : opts.load(xhr.response);
+            ? xhr.responseText
+            : opts.load(xhr.responseText);
         }
         resolve(data);
       } else {
