@@ -66,12 +66,12 @@ function urlEncode(params, prefix) {
     const p = prefix ? `${prefix}[${k}]` : k;
     const v = params[k];
     paramStrings.push(
-      typeof v == "object" ?
+      typeof v == 'object' ?
       urlEncode(v, p) :
       `${encodeURIComponent(p)}=${encodeURIComponent(v)}`
     );
   }
-  return paramStrings.join("&");
+  return paramStrings.join('&');
 }
 
 let config = {};
