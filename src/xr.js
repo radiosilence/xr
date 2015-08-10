@@ -59,13 +59,19 @@ function assign(l, ...rs) {
   return l;
 }
 
-function urlEncode(params) {
+function urlEncode(params, prefix) {
   const paramStrings = [];
   for (const k in params) {
     if (!{}.hasOwnProperty.call(params, k)) continue;
-    paramStrings.push(`${encodeURIComponent(k)}=${encodeURIComponent(params[k])}`);
+    const p = prefix ? `${prefix}[${k}]` : k;
+    const v = params[k];
+    paramStrings.push(
+      typeof v == "object" ?
+      urlEncode(v, p) :
+      `${encodeURIComponent(p)}=${encodeURIComponent(v)}`
+    );
   }
-  return paramStrings.join('&');
+  return paramStrings.join("&");
 }
 
 let config = {};

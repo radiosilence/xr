@@ -81,11 +81,13 @@
     return l;
   }
 
-  function urlEncode(params) {
+  function urlEncode(params, prefix) {
     var paramStrings = [];
     for (var k in params) {
       if (!({}).hasOwnProperty.call(params, k)) continue;
-      paramStrings.push(encodeURIComponent(k) + '=' + encodeURIComponent(params[k]));
+      var p = prefix ? '' + prefix + '[' + k + ']' : k;
+      var v = params[k];
+      paramStrings.push(typeof v == 'object' ? urlEncode(v, p) : '' + encodeURIComponent(p) + '=' + encodeURIComponent(v));
     }
     return paramStrings.join('&');
   }
@@ -105,7 +107,7 @@
       var opts = assign({}, defaults, config, args);
       var xhr = opts.xmlHttpRequest();
 
-      xhr.open(opts.method, opts.params ? opts.url.split('?')[0] + '?' + urlEncode(opts.params) : opts.url, true);
+      xhr.open(opts.method, opts.params ? '' + opts.url.split('?')[0] + '?' + urlEncode(opts.params) : opts.url, true);
 
       xhr.addEventListener(Events.LOAD, function () {
         if (xhr.status >= 200 && xhr.status < 300) {
