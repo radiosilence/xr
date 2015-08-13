@@ -64,6 +64,18 @@
     };
   }
 
+  function xhrData(xhr, opts) {
+    if (xhr.responseText) {
+      if (opts.raw === true) {
+        return xhr.responseText;
+      } else {
+        return opts.load(xhr.responseText);
+      }
+    } else {
+      return null;
+    }
+  }
+
   function assign(l) {
     for (var _len = arguments.length, rs = Array(_len > 1 ? _len - 1 : 0), _key = 1; _key < _len; _key++) {
       rs[_key - 1] = arguments[_key];
@@ -109,11 +121,9 @@
 
       xhr.addEventListener(Events.LOAD, function () {
         if (xhr.status >= 200 && xhr.status < 300) {
-          var _data = null;
-          if (xhr.responseText) {
-            _data = opts.raw === true ? xhr.responseText : opts.load(xhr.responseText);
-          }
-          resolve(_data);
+          resolve(assign({}, res(xhr), {
+            data: xhrData(xhr, opts)
+          }));
         } else {
           reject(res(xhr));
         }

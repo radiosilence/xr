@@ -42,8 +42,20 @@ function res(xhr) {
   return {
     status: xhr.status,
     response: xhr.response,
-    xhr: xhr
+    xhr
   };
+}
+
+function xhrData(xhr, opts) {
+  if (xhr.responseText) {
+    if (opts.raw === true) {
+      return xhr.responseText;
+    } else {
+      return opts.load(xhr.responseText);
+    }
+  } else {
+    return null;
+  }
 }
 
 function assign(l, ...rs) {
@@ -96,13 +108,9 @@ function xr(args) {
 
     xhr.addEventListener(Events.LOAD, () => {
       if (xhr.status >= 200 && xhr.status < 300) {
-        let data = null;
-        if (xhr.responseText) {
-          data = opts.raw === true
-            ? xhr.responseText
-            : opts.load(xhr.responseText);
-        }
-        resolve(data);
+        resolve(assign({}, res(xhr), {
+          data: xhrData(xhr, opts)
+        }));
       } else {
         reject(res(xhr));
       }
