@@ -18,6 +18,10 @@ It's lightweight, has no dependencies (other than having either Promise
 in the global namespace or provided via `xr.config`), and adds pretty
 much no overhead over the standard XHR API.
 
+Install
+----------
+`npm install xr --save`
+
 Quickstart
 ----------
 
