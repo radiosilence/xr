@@ -118,6 +118,8 @@ function xr(args) {
     xhr.addEventListener(Events.ERROR, () => reject(res(xhr)));
     xhr.addEventListener(Events.TIMEOUT, () => reject(res(xhr)));
 
+    if (opts.timeout) xhr.timeout = opts.timeout;
+
     for (const k in opts.headers) {
       if (!{}.hasOwnProperty.call(opts.headers, k)) continue;
       xhr.setRequestHeader(k, opts.headers[k]);

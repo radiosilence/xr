@@ -85,9 +85,9 @@
     var paramStrings = [];
     for (var k in params) {
       if (!({}).hasOwnProperty.call(params, k)) continue;
-      var p = prefix ? '' + prefix + '[' + k + ']' : k;
+      var p = prefix ? prefix + '[' + k + ']' : k;
       var v = params[k];
-      paramStrings.push(typeof v == 'object' ? urlEncode(v, p) : '' + encodeURIComponent(p) + '=' + encodeURIComponent(v));
+      paramStrings.push(typeof v == 'object' ? urlEncode(v, p) : encodeURIComponent(p) + '=' + encodeURIComponent(v));
     }
     return paramStrings.join('&');
   }
@@ -107,7 +107,7 @@
       var opts = assign({}, defaults, config, args);
       var xhr = opts.xmlHttpRequest();
 
-      xhr.open(opts.method, opts.params ? '' + opts.url.split('?')[0] + '?' + urlEncode(opts.params) : opts.url, true);
+      xhr.open(opts.method, opts.params ? opts.url.split('?')[0] + '?' + urlEncode(opts.params) : opts.url, true);
 
       xhr.addEventListener(Events.LOAD, function () {
         if (xhr.status >= 200 && xhr.status < 300) {
@@ -130,6 +130,8 @@
       xhr.addEventListener(Events.TIMEOUT, function () {
         return reject(res(xhr));
       });
+
+      if (opts.timeout) xhr.timeout = opts.timeout;
 
       for (var k in opts.headers) {
         if (!({}).hasOwnProperty.call(opts.headers, k)) continue;
