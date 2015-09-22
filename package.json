@@ -1,6 +1,6 @@
 {
   "name": "xr",
-  "version": "0.1.14",
+  "version": "0.1.14-async",
   "description": "Ultra-simple wrapper around XMLHttpRequest.",
   "main": "xr.js",
   "scripts": {
@@ -32,6 +32,7 @@
     "eslint-plugin-react": "^3.4.2"
   },
   "dependencies": {
-    "babel-runtime": "^5.8.24"
+    "babel-runtime": "^5.8.24",
+    "bluebird": "^2.10.1"
   }
 }
