@@ -81,54 +81,54 @@ function promise(args, fn) {
   )(fn);
 }
 
-function xr(args) {
-  return promise(args, (resolve, reject) => {
-    const opts = assign({}, defaults, config, args);
-    const xhr = opts.xmlHttpRequest();
+async function xr(args) {
 
-    xhr.open(
-      opts.method,
-      opts.params
-        ? `${opts.url.split('?')[0]}?${urlEncode(opts.params)}`
-        : opts.url,
-      true
-    );
+  const opts = assign({}, defaults, config, args);
+  const xhr = opts.xmlHttpRequest();
 
-    xhr.addEventListener(Events.LOAD, () => {
-      if (xhr.status >= 200 && xhr.status < 300) {
-        let data = null;
-        if (xhr.responseText) {
-          data = opts.raw === true
-            ? xhr.responseText
-            : opts.load(xhr.responseText);
-        }
-        resolve(data);
-      } else {
-        reject(res(xhr));
+  xhr.open(
+    opts.method,
+    opts.params
+      ? `${opts.url.split('?')[0]}?${urlEncode(opts.params)}`
+      : opts.url,
+    true
+  );
+
+  // xhr.addEventListener(Events.ABORT, err => throw new Error(err));
+  // xhr.addEventListener(Events.ERROR, err => throw new Error(err));
+  // xhr.addEventListener(Events.TIMEOUT, err => throw new Error(err));
+
+  const data = await promise(args, (resolve, reject) => xhr.addEventListener(Events.LOAD, () => {
+    if (xhr.status >= 200 && xhr.status < 300) {
+      let data = null;
+      if (xhr.responseText) {
+        data = opts.raw === true
+          ? xhr.responseText
+          : opts.load(xhr.responseText);
       }
-    });
-
-    xhr.addEventListener(Events.ABORT, () => reject(res(xhr)));
-    xhr.addEventListener(Events.ERROR, () => reject(res(xhr)));
-    xhr.addEventListener(Events.TIMEOUT, () => reject(res(xhr)));
-
-    for (const k in opts.headers) {
-      if (!{}.hasOwnProperty.call(opts.headers, k)) continue;
-      xhr.setRequestHeader(k, opts.headers[k]);
+      resolve(data);
+    } else {
+      reject(res(xhr));
     }
+  }));
 
-    for (const k in opts.events) {
-      if (!{}.hasOwnProperty.call(opts.events, k)) continue;
-      xhr.addEventListener(k, opts.events[k].bind(null, xhr), false);
-    }
+  for (const k in opts.headers) {
+    if (!{}.hasOwnProperty.call(opts.headers, k)) continue;
+    xhr.setRequestHeader(k, opts.headers[k]);
+  }
 
-    const data = (typeof opts.data === 'object' && !opts.raw)
-        ? opts.dump(opts.data)
-        : opts.data;
+  for (const k in opts.events) {
+    if (!{}.hasOwnProperty.call(opts.events, k)) continue;
+    xhr.addEventListener(k, opts.events[k].bind(null, xhr), false);
+  }
 
-    if (data !== undefined) xhr.send(data);
-    else xhr.send();
-  });
+  const body = (typeof opts.data === 'object' && !opts.raw)
+    ? opts.dump(opts.data)
+    : opts.data;
+
+
+  if (body !== undefined) xhr.send(body);
+  else xhr.send();
 }
 
 xr.assign = assign;

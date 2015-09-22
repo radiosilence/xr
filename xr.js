@@ -1,16 +1,16 @@
 (function (global, factory) {
   if (typeof define === 'function' && define.amd) {
-    define(['exports', 'module'], factory);
+    define(['exports', 'module', 'bluebird'], factory);
   } else if (typeof exports !== 'undefined' && typeof module !== 'undefined') {
-    factory(exports, module);
+    factory(exports, module, require('bluebird'));
   } else {
     var mod = {
       exports: {}
     };
-    factory(mod.exports, mod);
+    factory(mod.exports, mod, global._bluebird);
     global.xr = mod.exports;
   }
-})(this, function (exports, module) {
+})(this, function (exports, module, _bluebird2) {
   /**
    * xr (c) James Cleveland 2015
    * URL: https://github.com/radiosilence/xr
@@ -18,6 +18,46 @@
    */
 
   'use strict';
+
+  var xr = _bluebird2.coroutine(function* (args) {
+
+    var opts = assign({}, defaults, config, args);
+    var xhr = opts.xmlHttpRequest();
+
+    xhr.open(opts.method, opts.params ? opts.url.split('?')[0] + '?' + urlEncode(opts.params) : opts.url, true);
+
+    // xhr.addEventListener(Events.ABORT, err => throw new Error(err));
+    // xhr.addEventListener(Events.ERROR, err => throw new Error(err));
+    // xhr.addEventListener(Events.TIMEOUT, err => throw new Error(err));
+
+    var data = yield promise(args, function (resolve, reject) {
+      return xhr.addEventListener(Events.LOAD, function () {
+        if (xhr.status >= 200 && xhr.status < 300) {
+          var _data = null;
+          if (xhr.responseText) {
+            _data = opts.raw === true ? xhr.responseText : opts.load(xhr.responseText);
+          }
+          resolve(_data);
+        } else {
+          reject(res(xhr));
+        }
+      });
+    });
+
+    for (var k in opts.headers) {
+      if (!({}).hasOwnProperty.call(opts.headers, k)) continue;
+      xhr.setRequestHeader(k, opts.headers[k]);
+    }
+
+    for (var k in opts.events) {
+      if (!({}).hasOwnProperty.call(opts.events, k)) continue;
+      xhr.addEventListener(k, opts.events[k].bind(null, xhr), false);
+    }
+
+    var body = typeof opts.data === 'object' && !opts.raw ? opts.dump(opts.data) : opts.data;
+
+    if (body !== undefined) xhr.send(body);else xhr.send();
+  });
 
   var Methods = {
     GET: 'GET',
@@ -98,51 +138,6 @@
 
   function promise(args, fn) {
     return (args && args.promise ? args.promise : config.promise || defaults.promise)(fn);
-  }
-
-  function xr(args) {
-    return promise(args, function (resolve, reject) {
-      var opts = assign({}, defaults, config, args);
-      var xhr = opts.xmlHttpRequest();
-
-      xhr.open(opts.method, opts.params ? opts.url.split('?')[0] + '?' + urlEncode(opts.params) : opts.url, true);
-
-      xhr.addEventListener(Events.LOAD, function () {
-        if (xhr.status >= 200 && xhr.status < 300) {
-          var _data = null;
-          if (xhr.responseText) {
-            _data = opts.raw === true ? xhr.responseText : opts.load(xhr.responseText);
-          }
-          resolve(_data);
-        } else {
-          reject(res(xhr));
-        }
-      });
-
-      xhr.addEventListener(Events.ABORT, function () {
-        return reject(res(xhr));
-      });
-      xhr.addEventListener(Events.ERROR, function () {
-        return reject(res(xhr));
-      });
-      xhr.addEventListener(Events.TIMEOUT, function () {
-        return reject(res(xhr));
-      });
-
-      for (var k in opts.headers) {
-        if (!({}).hasOwnProperty.call(opts.headers, k)) continue;
-        xhr.setRequestHeader(k, opts.headers[k]);
-      }
-
-      for (var k in opts.events) {
-        if (!({}).hasOwnProperty.call(opts.events, k)) continue;
-        xhr.addEventListener(k, opts.events[k].bind(null, xhr), false);
-      }
-
-      var data = typeof opts.data === 'object' && !opts.raw ? opts.dump(opts.data) : opts.data;
-
-      if (data !== undefined) xhr.send(data);else xhr.send();
-    });
   }
 
   xr.assign = assign;
