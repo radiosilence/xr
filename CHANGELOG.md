@@ -1,7 +1,7 @@
 xr Changelog
 ============
 
-0.1.14
+0.1.15
 ------
 
 * Using `querystring` for URL encoding instead of previous function.
