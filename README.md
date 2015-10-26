@@ -26,11 +26,11 @@ Quickstart
 ----------
 
 ```javascript
-xr.get('/api/items', {take: 5})
-  .then(res => console.log(res.data));
-    
-xr.post('/api/item', {name: 'hello'})
-  .then(res => console.log("new item", res.data));
+const res = await xr.get('/api/items', {take: 5});
+console.log(res.data);
+
+const res = await xr.post('/api/item', {name: 'hello'});
+console.log('new item', res.data);
 ```
 
 Extended syntax:
@@ -77,7 +77,7 @@ xr.post('/url', {'some': 'data'}, {
 Global configuration
 --------------------
 
-One thing that I've always found irritating with libraries it that if you want to 
+One thing that I've always found irritating with libraries it that if you want to
 override the defaults, you have to do it per-request, or wrap the libraries.
 
 With XR, this is simple, as you can globally configure the module for your project.
@@ -102,7 +102,7 @@ Alias Methods
 -------------
 
 You can do some quick aliases to requests, for instance:
-    
+
 ```javascript
 xr.get('/my-url')
 ```
