@@ -81,11 +81,13 @@
     return l;
   }
 
-  function urlEncode(params) {
+  function urlEncode(params, prefix) {
     var paramStrings = [];
     for (var k in params) {
       if (!({}).hasOwnProperty.call(params, k)) continue;
-      paramStrings.push(encodeURIComponent(k) + '=' + encodeURIComponent(params[k]));
+      var p = prefix ? prefix + '[' + k + ']' : k;
+      var v = params[k];
+      paramStrings.push(typeof v == 'object' ? urlEncode(v, p) : encodeURIComponent(p) + '=' + encodeURIComponent(v));
     }
     return paramStrings.join('&');
   }
@@ -128,6 +130,8 @@
       xhr.addEventListener(Events.TIMEOUT, function () {
         return reject(res(xhr));
       });
+
+      if (opts.timeout) xhr.timeout = opts.timeout;
 
       for (var k in opts.headers) {
         if (!({}).hasOwnProperty.call(opts.headers, k)) continue;

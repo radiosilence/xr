@@ -59,11 +59,17 @@ function assign(l, ...rs) {
   return l;
 }
 
-function urlEncode(params) {
+function urlEncode(params, prefix) {
   const paramStrings = [];
   for (const k in params) {
     if (!{}.hasOwnProperty.call(params, k)) continue;
-    paramStrings.push(`${encodeURIComponent(k)}=${encodeURIComponent(params[k])}`);
+    const p = prefix ? `${prefix}[${k}]` : k;
+    const v = params[k];
+    paramStrings.push(
+      typeof v == 'object' ?
+      urlEncode(v, p) :
+      `${encodeURIComponent(p)}=${encodeURIComponent(v)}`
+    );
   }
   return paramStrings.join('&');
 }
@@ -111,6 +117,8 @@ function xr(args) {
     xhr.addEventListener(Events.ABORT, () => reject(res(xhr)));
     xhr.addEventListener(Events.ERROR, () => reject(res(xhr)));
     xhr.addEventListener(Events.TIMEOUT, () => reject(res(xhr)));
+
+    if (opts.timeout) xhr.timeout = opts.timeout;
 
     for (const k in opts.headers) {
       if (!{}.hasOwnProperty.call(opts.headers, k)) continue;
