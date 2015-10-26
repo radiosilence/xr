@@ -18,6 +18,10 @@ It's lightweight, has no dependencies (other than having either Promise
 in the global namespace or provided via `xr.config`), and adds pretty
 much no overhead over the standard XHR API.
 
+Install
+----------
+`npm install xr --save`
+
 Quickstart
 ----------
 
@@ -107,7 +111,7 @@ Requirements
 ------------
 
 There must be a [polyfill](https://github.com/jakearchibald/es6-promise) or [browser](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Promise#Browser_compatibility) that supports at least the standard ES6 promise API
-(xr will use whatever's there), and `[Object.assign()](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object/assign)'.
+(xr will use whatever's there).
 
 License
 -------
