@@ -4,6 +4,7 @@
  * License: BSD
  */
 
+import encode from 'querystring/encode';
 
 const Methods = {
   GET: 'GET',
@@ -59,15 +60,6 @@ function assign(l, ...rs) {
   return l;
 }
 
-function urlEncode(params) {
-  const paramStrings = [];
-  for (const k in params) {
-    if (!{}.hasOwnProperty.call(params, k)) continue;
-    paramStrings.push(`${encodeURIComponent(k)}=${encodeURIComponent(params[k])}`);
-  }
-  return paramStrings.join('&');
-}
-
 let config = {};
 
 function configure(opts) {
@@ -89,7 +81,7 @@ function xr(args) {
     xhr.open(
       opts.method,
       opts.params
-        ? `${opts.url.split('?')[0]}?${urlEncode(opts.params)}`
+        ? `${opts.url.split('?')[0]}?${encode(opts.params)}`
         : opts.url,
       true
     );
@@ -132,7 +124,7 @@ function xr(args) {
 }
 
 xr.assign = assign;
-xr.urlEncode = urlEncode;
+xr.encode = encode;
 xr.configure = configure;
 xr.Methods = Methods;
 xr.Events = Events;

@@ -4,9 +4,9 @@
   "description": "Ultra-simple wrapper around XMLHttpRequest.",
   "main": "xr.js",
   "scripts": {
-    "build": "babel --modules umd -o xr.js --loose all src/xr.js",
     "update-authors": "git log --format='%aN <%aE>' | sort -u | grep -v noreply > AUTHORS",
-    "prepublish": "npm run build; npm run update-authors"
+    "prepublish": "npm run build; npm run update-authors",
+    "build": "webpack --config webpack.config.js"
   },
   "repository": {
     "type": "git",
@@ -28,6 +28,10 @@
     "babel": "^5.6.14",
     "babel-eslint": "^3.1.23",
     "eslint": "^0.24.0",
-    "eslint-plugin-react": "^2.6.4"
+    "eslint-plugin-react": "^2.6.4",
+    "eslint-config-airbnb": "0.0.8"
+  },
+  "dependencies": {
+    "querystring": "^0.2.0"
   }
 }

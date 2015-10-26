@@ -1,6 +1,13 @@
 xr Changelog
 ============
 
+0.1.14
+------
+
+* Using `querystring` for URL encoding instead of previous function.
+* Build process uses webpack.
+* Readme updates.
+
 0.1.13
 ------
 
