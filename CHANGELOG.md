@@ -1,10 +1,12 @@
 xr Changelog
 ============
 
-0.1.16
+0.2.0
 ------
 
+* [API Change] Resolving promis now includes a "res" object, as opposed to just raw data.
 * Added "abort" method to returned promise.
+* Remove hot update from build (whoops!).
 
 0.1.15
 ------

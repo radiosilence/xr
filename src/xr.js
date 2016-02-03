@@ -39,10 +39,11 @@ const defaults = {
   promise: fn => new Promise(fn),
 };
 
-function res(xhr) {
+function res(xhr, data) {
   return {
     status: xhr.status,
     response: xhr.response,
+    data,
     xhr,
   };
 }
@@ -99,7 +100,7 @@ function xr(args) {
             ? xhr.responseText
             : opts.load(xhr.responseText);
         }
-        resolve(data);
+        resolve(res(xhr, data));
       } else {
         reject(res(xhr));
       }
