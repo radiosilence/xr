@@ -12,7 +12,7 @@ const Methods = {
   PUT: 'PUT',
   DELETE: 'DELETE',
   PATCH: 'PATCH',
-  OPTIONS: 'OPTIONS'
+  OPTIONS: 'OPTIONS',
 };
 
 const Events = {
@@ -23,7 +23,7 @@ const Events = {
   ERROR: 'error',
   LOAD: 'load',
   TIMEOUT: 'timeout',
-  LOAD_END: 'loadend'
+  LOAD_END: 'loadend',
 };
 
 const defaults = {
@@ -31,19 +31,19 @@ const defaults = {
   data: undefined,
   headers: {
     'Accept': 'application/json',
-    'Content-Type': 'application/json'
+    'Content-Type': 'application/json',
   },
   dump: JSON.stringify,
   load: JSON.parse,
   xmlHttpRequest: () => new XMLHttpRequest(),
-  promise: fn => new Promise(fn)
+  promise: fn => new Promise(fn),
 };
 
 function res(xhr) {
   return {
     status: xhr.status,
     response: xhr.response,
-    xhr: xhr
+    xhr,
   };
 }
 
@@ -74,9 +74,10 @@ function promise(args, fn) {
 }
 
 function xr(args) {
-  return promise(args, (resolve, reject) => {
+  const p = promise(args, (resolve, reject) => {
     const opts = assign({}, defaults, config, args);
     const xhr = opts.xmlHttpRequest();
+    p.abort = xhr.abort;
 
     xhr.open(
       opts.method,
@@ -121,6 +122,7 @@ function xr(args) {
     if (data !== undefined) xhr.send(data);
     else xhr.send();
   });
+  return p;
 }
 
 xr.assign = assign;
@@ -130,11 +132,11 @@ xr.Methods = Methods;
 xr.Events = Events;
 xr.defaults = defaults;
 
-xr.get = (url, params, args) => xr(assign({url: url, method: Methods.GET, params: params}, args));
-xr.put = (url, data, args) => xr(assign({url: url, method: Methods.PUT, data: data}, args));
-xr.post = (url, data, args) => xr(assign({url: url, method: Methods.POST, data: data}, args));
-xr.patch = (url, data, args) => xr(assign({url: url, method: Methods.PATCH, data: data}, args));
-xr.del = (url, args) => xr(assign({url: url, method: Methods.DELETE}, args));
-xr.options = (url, args) => xr(assign({url: url, method: Methods.OPTIONS}, args));
+xr.get = (url, params, args) => xr(assign({ url, method: Methods.GET, params }, args));
+xr.put = (url, data, args) => xr(assign({ url, method: Methods.PUT, data }, args));
+xr.post = (url, data, args) => xr(assign({ url, method: Methods.POST, data }, args));
+xr.patch = (url, data, args) => xr(assign({ url, method: Methods.PATCH, data }, args));
+xr.del = (url, args) => xr(assign({ url, method: Methods.DELETE }, args));
+xr.options = (url, args) => xr(assign({ url, method: Methods.OPTIONS }, args));
 
 export default xr;

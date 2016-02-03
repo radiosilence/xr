@@ -1,6 +1,11 @@
 xr Changelog
 ============
 
+0.1.16
+------
+
+* Added "abort" method to returned promise.
+
 0.1.15
 ------
 
