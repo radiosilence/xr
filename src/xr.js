@@ -77,7 +77,11 @@ function xr(args) {
   const p = promise(args, (resolve, reject) => {
     const opts = assign({}, defaults, config, args);
     const xhr = opts.xmlHttpRequest();
-    p.abort = xhr.abort;
+
+    p.abort = () => {
+      reject(res(xhr));
+      xhr.abort();
+    }
 
     xhr.open(
       opts.method,
