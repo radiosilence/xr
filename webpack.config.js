@@ -17,7 +17,16 @@ module.exports = {
   },
   plugins: [
     new webpack.NoErrorsPlugin(),
-    new webpack.optimize.UglifyJsPlugin({ minimize: true }),
+    new webpack.optimize.UglifyJsPlugin({
+      minimize: true,
+      compress: {
+        drop_console: true,
+        warnings: false,
+      },
+      output: {
+        comments: false,
+      },
+    }),
     new webpack.DefinePlugin({
       'process.env': {
         NODE_ENV: JSON.stringify('production'),

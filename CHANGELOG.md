@@ -7,6 +7,7 @@ xr Changelog
 * [API Change] Resolving promis now includes a "res" object, as opposed to just raw data.
 * Added "abort" method to returned promise.
 * Remove hot update from build (whoops!).
+* Add withCredentials argument for CORS.
 
 0.1.15
 ------

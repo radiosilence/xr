@@ -37,6 +37,7 @@ const defaults = {
   load: JSON.parse,
   xmlHttpRequest: () => new XMLHttpRequest(),
   promise: fn => new Promise(fn),
+  withCredentials: false,
 };
 
 function res(xhr, data) {
@@ -75,15 +76,17 @@ function promise(args, fn) {
 }
 
 function xr(args) {
-  const p = promise(args, (resolve, reject) => {
+  return promise(args, (resolve, reject) => {
     const opts = assign({}, defaults, config, args);
     const xhr = opts.xmlHttpRequest();
 
-    xhr.withCredentials = args.withCredentials;
+    xhr.withCredentials = opts.withCredentials;
 
-    p.abort = () => {
-      reject(res(xhr));
-      xhr.abort();
+    if (opts.abort) {
+      args.abort(() => {
+        reject(res(xhr));
+        xhr.abort();
+      })
     }
 
     xhr.open(
@@ -129,7 +132,6 @@ function xr(args) {
     if (data !== undefined) xhr.send(data);
     else xhr.send();
   });
-  return p;
 }
 
 xr.assign = assign;
