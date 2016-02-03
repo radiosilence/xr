@@ -79,6 +79,8 @@ function xr(args) {
     const opts = assign({}, defaults, config, args);
     const xhr = opts.xmlHttpRequest();
 
+    xhr.withCredentials = args.withCredentials;
+
     p.abort = () => {
       reject(res(xhr));
       xhr.abort();
