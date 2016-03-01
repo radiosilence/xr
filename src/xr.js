@@ -80,8 +80,6 @@ function xr(args) {
     const opts = assign({}, defaults, config, args);
     const xhr = opts.xmlHttpRequest();
 
-    xhr.withCredentials = opts.withCredentials;
-
     if (opts.abort) {
       args.abort(() => {
         reject(res(xhr));
@@ -96,6 +94,9 @@ function xr(args) {
         : opts.url,
       true
     );
+
+    // setting after open for compatibility with IE versions <=10
+    xhr.withCredentials = opts.withCredentials;
 
     xhr.addEventListener(Events.LOAD, () => {
       if (xhr.status >= 200 && xhr.status < 300) {
