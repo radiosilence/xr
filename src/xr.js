@@ -97,6 +97,16 @@ function xr(args) {
       true
     );
 
+    for (const k in opts.headers) {
+      if (!{}.hasOwnProperty.call(opts.headers, k)) continue;
+      xhr.setRequestHeader(k, opts.headers[k]);
+    }
+
+    for (const k in opts.events) {
+      if (!{}.hasOwnProperty.call(opts.events, k)) continue;
+      xhr.addEventListener(k, opts.events[k].bind(null, xhr), false);
+    }
+
     xhr.addEventListener(Events.LOAD, () => {
       if (xhr.status >= 200 && xhr.status < 300) {
         let data = null;
@@ -114,16 +124,6 @@ function xr(args) {
     xhr.addEventListener(Events.ABORT, () => reject(res(xhr)));
     xhr.addEventListener(Events.ERROR, () => reject(res(xhr)));
     xhr.addEventListener(Events.TIMEOUT, () => reject(res(xhr)));
-
-    for (const k in opts.headers) {
-      if (!{}.hasOwnProperty.call(opts.headers, k)) continue;
-      xhr.setRequestHeader(k, opts.headers[k]);
-    }
-
-    for (const k in opts.events) {
-      if (!{}.hasOwnProperty.call(opts.events, k)) continue;
-      xhr.addEventListener(k, opts.events[k].bind(null, xhr), false);
-    }
 
     const data = (typeof opts.data === 'object' && !opts.raw)
         ? opts.dump(opts.data)
