@@ -38,6 +38,7 @@ const defaults = {
   xmlHttpRequest: () => new XMLHttpRequest(),
   promise: fn => new Promise(fn),
   withCredentials: false,
+  timeout: 0,
 };
 
 function res(xhr, data) {
@@ -96,6 +97,8 @@ function xr(args) {
         : opts.url,
       true
     );
+
+    xhr.timeout = opts.timeout;
 
     xhr.addEventListener(Events.LOAD, () => {
       if (xhr.status >= 200 && xhr.status < 300) {
