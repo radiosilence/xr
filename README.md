@@ -26,6 +26,8 @@ Quickstart
 ----------
 
 ```javascript
+import xr from 'xr';
+
 const res = await xr.get('/api/items', { take: 5 });
 logger.log(res.data);
 
@@ -36,14 +38,16 @@ logger.log('new item', res.data);
 Extended syntax:
 
 ```javascript
+import xr from 'xr';
+
 xr({
   method: xr.Methods.GET,
   url: '/api/items',
   params: {take: 5},
   events: {
     [xr.Events.PROGRESS]: (xhr, xhrProgressEvent) => {
-      console.log("xhr", xhr);
-      console.log("progress", xhrProgressEvent);
+      logger.log("xhr", xhr);
+      logger.log("progress", xhrProgressEvent);
     },
   },
 });
