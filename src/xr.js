@@ -75,6 +75,31 @@ function promise(args, fn) {
   )(fn);
 }
 
+function getURI(opts) {
+	let uri = opts.url;
+	let subPath = opts.subPath
+	if(!uri|| subPath.indexOf("://") !== -1) {
+		uri = subPath;
+		subPath = undefined;
+	}
+	if(subPath || opts.params) {
+		uri = uri.split('?')[0];
+	}
+	if(subPath) {
+		if(uri.indexOf('/') === uri.length - 1) { 
+			uri = uri.substr(0, uri.length -1);
+		}
+		if(subPath.indexOf('/') === 0) {
+			subPath = subPath.substr(1);
+		}
+		uri = `${uri}/${subPath}`;
+	}
+	if(opts.params) {
+		uri = `${uri}?${encode(opts.params)}`
+	}
+	return uri;
+}
+
 function xr(args) {
   return promise(args, (resolve, reject) => {
     const opts = assign({}, defaults, config, args);
@@ -87,13 +112,7 @@ function xr(args) {
       })
     }
 
-    xhr.open(
-      opts.method,
-      opts.params
-        ? `${opts.url.split('?')[0]}?${encode(opts.params)}`
-        : opts.url,
-      true
-    );
+    xhr.open(opts.method, getURI(opts), true );
 
     // setting after open for compatibility with IE versions <=10
     xhr.withCredentials = opts.withCredentials;
@@ -142,11 +161,11 @@ xr.Methods = Methods;
 xr.Events = Events;
 xr.defaults = defaults;
 
-xr.get = (url, params, args) => xr(assign({ url, method: Methods.GET, params }, args));
-xr.put = (url, data, args) => xr(assign({ url, method: Methods.PUT, data }, args));
-xr.post = (url, data, args) => xr(assign({ url, method: Methods.POST, data }, args));
-xr.patch = (url, data, args) => xr(assign({ url, method: Methods.PATCH, data }, args));
-xr.del = (url, args) => xr(assign({ url, method: Methods.DELETE }, args));
-xr.options = (url, args) => xr(assign({ url, method: Methods.OPTIONS }, args));
+xr.get = (subPath, params, args) => xr(assign({ subPath, method: Methods.GET, params }, args));
+xr.put = (subPath, data, args) => xr(assign({ subPath, method: Methods.PUT, data }, args));
+xr.post = (subPath, data, args) => xr(assign({ subPath, method: Methods.POST, data }, args));
+xr.patch = (subPath, data, args) => xr(assign({ subPath, method: Methods.PATCH, data }, args));
+xr.del = (subPath, args) => xr(assign({ subPath, method: Methods.DELETE }, args));
+xr.options = (subPath, args) => xr(assign({ subPath, method: Methods.OPTIONS }, args));
 
 export default xr;
