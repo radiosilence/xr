@@ -26,11 +26,11 @@ Quickstart
 ----------
 
 ```javascript
-const res = await xr.get('/api/items', {take: 5});
-console.log(res.data);
+const res = await xr.get('/api/items', { take: 5 });
+logger.log(res.data);
 
-const res = await xr.post('/api/item', {name: 'hello'});
-console.log('new item', res.data);
+const res = await xr.post('/api/item', { name: 'hello' });
+logger.log('new item', res.data);
 ```
 
 Extended syntax:
@@ -44,8 +44,8 @@ xr({
     [xr.Events.PROGRESS]: (xhr, xhrProgressEvent) => {
       console.log("xhr", xhr);
       console.log("progress", xhrProgressEvent);
-    }
-  }
+    },
+  },
 });
 ```
 
@@ -53,7 +53,7 @@ Custom promise:
 
 ```javascript
 xr.get('/url', {}, {
-  promise: fn => new myPromiseClass(fn)
+  promise: fn => new myPromiseClass(fn),
 });
 ```
 
@@ -61,16 +61,16 @@ Raw mode (data is not dumped/loaded):
 
 ```javascript
 xr.put('/url', 'some data', {
-  raw: true
+  raw: true,
 });
 ```
 
 Custom dump/load:
 
 ```javascript
-xr.post('/url', {'some': 'data'}, {
+xr.post('/url', { 'some': 'data' }, {
   dump: data => msgpack.encode(data),
-  load: data => msgpack.decode(data)
+  load: data => msgpack.decode(data),
 });
 ```
 
@@ -84,7 +84,7 @@ With XR, this is simple, as you can globally configure the module for your proje
 
 ```javascript
 xr.configure({
-  promise: fn => new myPromise(fn)
+  promise: fn => new myPromise(fn),
 })
 ```
 
