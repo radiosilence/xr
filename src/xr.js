@@ -84,7 +84,7 @@ function xr(args) {
       args.abort(() => {
         reject(res(xhr));
         xhr.abort();
-      })
+      });
     }
 
     xhr.open(

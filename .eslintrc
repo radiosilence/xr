@@ -2,12 +2,9 @@
 // Copy this file, and add rule overrides as needed.
 {
   "parser": "babel-eslint",
-  "rules": {
-    "strict": 0
-  },
   "globals": {
     "I": "Immutable",
-    "google": true,
+    "google": true
   },
   "extends": "airbnb",
   "env": {                           // http://eslint.org/docs/user-guide/configuring.html#specifying-environments
@@ -16,15 +13,16 @@
     "mocha": true                    // Mocha global variables for unit tests
   },
   "rules": {
+    "strict": 0,
     "new-cap": [2, {                 // http://eslint.org/docs/rules/new-cap
       "newIsCap": true,
-      "capIsNewExceptions": ["Map", "List", "OrderedMap", "Set", "Range", "Iterable"],
+      "capIsNewExceptions": ["Map", "List", "OrderedMap", "Set", "Range", "Iterable"]
     }],
     "react/no-multi-comp": 0,
     "react/jsx-no-bind": 0,
     "react/jsx-closing-bracket-location": 0,
     "quote-props": 0,
     "no-nested-ternary": 0,
-    "no-param-reassign"
+    "no-param-reassign": 0
   }
 }
