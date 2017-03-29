@@ -89,7 +89,7 @@ With XR, this is simple, as you can globally configure the module for your proje
 ```javascript
 xr.configure({
   promise: fn => new myPromise(fn),
-})
+});
 ```
 
 
@@ -108,7 +108,7 @@ Alias Methods
 You can do some quick aliases to requests, for instance:
 
 ```javascript
-xr.get('/my-url')
+xr.get('/my-url');
 ```
 
 Requirements
