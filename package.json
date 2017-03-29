@@ -7,7 +7,8 @@
     "update-authors": "git log --format='%aN <%aE>' | sort -u | grep -v noreply > AUTHORS",
     "prepublish": "npm run build; npm run update-authors",
     "build": "NODE_ENV=production webpack --config webpack.config.js",
-    "babver": "babel --version"
+    "babver": "babel --version",
+    "lint": "eslint src"
   },
   "repository": {
     "type": "git",

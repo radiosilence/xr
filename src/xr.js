@@ -56,7 +56,7 @@ function assign(l, ...rs) {
     if (typeof r !== 'object') continue;
     for (const k in r) {
       if (!{}.hasOwnProperty.call(r, k)) continue;
-      l[k] = r[k];
+      l[k] = r[k]; // eslint-disable-line no-param-reassign
     }
   }
   return l;
@@ -92,7 +92,7 @@ function xr(args) {
       opts.params
         ? `${opts.url.split('?')[0]}?${encode(opts.params)}`
         : opts.url,
-      true
+      true,
     );
 
     // setting after open for compatibility with IE versions <=10
