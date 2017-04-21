@@ -1,0 +1,28 @@
+{
+    "compileOnSave": false,
+    "compilerOptions": {
+        "outDir": "./dist",
+        "sourceMap": true,
+        "module": "commonjs",
+        "target": "es5",
+        "noImplicitAny": true,
+        "strictNullChecks": true,
+        "importHelpers": true,
+        "jsx": "react",
+        "baseUrl": "./src",
+        "lib": [
+            "es2017",
+            "dom"
+        ],
+         "types": [
+            "jest"
+         ],
+        "typeRoots": [
+            "node_modules/@types"
+         ]
+    },
+    "include": [
+        "./src/**/*.tsx",
+        "./src/**/*.ts"
+    ]
+}

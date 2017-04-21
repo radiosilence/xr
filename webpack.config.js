@@ -1,6 +1,5 @@
 const webpack = require('webpack');
 const fs = require('fs');
-const babelConfig = JSON.parse(fs.readFileSync('./.babelrc'));
 
 module.exports = {
   debug: false,
@@ -34,16 +33,10 @@ module.exports = {
     }),
   ],
   resolve: {
-    extensions: ['', '.js', '.jsx'],
+    extensions: ['', '.js', '.ts'],
   },
   module: {
     loaders: [
-      {
-        test: /\.jsx?$/,
-        exclude: /node_modules|vendor/,
-        loader: 'babel',
-        query: babelConfig,
-      },
     ],
   },
 };
