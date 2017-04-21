@@ -4,7 +4,7 @@ const fs = require('fs');
 module.exports = {
   debug: false,
   entry: {
-    xr: ['./src/xr.js'],
+    xr: ['./dist/xr.js'],
   },
   output: {
     path: __dirname,

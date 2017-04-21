@@ -7,6 +7,7 @@ export const METHODS: Methods = {
   DELETE: 'DELETE',
   PATCH: 'PATCH',
   OPTIONS: 'OPTIONS',
+  HEAD: 'HEAD',
 }
 
 export const EVENTS: Events = {

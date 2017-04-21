@@ -4,7 +4,7 @@
  * License: BSD
  */
 
-import { stringify } from 'query-string'
+import { encode } from 'querystring'
 
 import { METHODS, EVENTS } from './constants'
 
@@ -60,7 +60,7 @@ const xr: any = (args: Config): Promise<any>  =>
         xhr.open(
             opts.method,
             opts.params
-                ? `${opts.url.split('?')[0]}?${stringify(opts.params)}`
+                ? `${opts.url.split('?')[0]}?${encode(opts.params)}`
                 : opts.url,
             true,
             )

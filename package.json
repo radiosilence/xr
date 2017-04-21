@@ -5,7 +5,8 @@
   "main": "xr.js",
   "scripts": {
     "update-authors": "git log --format='%aN <%aE>' | sort -u | grep -v noreply > AUTHORS",
-    "build": "NODE_ENV=production webpack --config webpack.config.js",
+    "prepublish": "npm run update-authors && npm run build",
+    "build": "NODE_ENV=production tsc && webpack --config webpack.config.js",
     "lint": "eslint src"
   },
   "repository": {
@@ -25,14 +26,12 @@
   },
   "homepage": "https://github.com/radiosilence/xr",
   "devDependencies": {
-    "@types/query-string": "^4.3.1",
     "tslint": "^5.1.0",
     "typescript": "2.3",
     "typescript-formatter": "5.1.3",
     "webpack": "^1.12.12"
   },
   "dependencies": {
-    "query-string": "^4.3.4",
-    "tslib": "^1.6.0"
+    "querystring": "^0.2.0"
   }
 }
