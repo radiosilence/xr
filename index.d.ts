@@ -1,11 +1,11 @@
 export interface Methods {
-  GET: 'GET'
-  POST: 'POST'
-  PUT: 'PUT'
-  DELETE: 'DELETE'
-  PATCH: 'PATCH'
-  OPTIONS: 'OPTIONS'
-  HEAD: 'HEAD'
+    GET: 'GET'
+    POST: 'POST'
+    PUT: 'PUT'
+    DELETE: 'DELETE'
+    PATCH: 'PATCH'
+    OPTIONS: 'OPTIONS'
+    HEAD: 'HEAD'
 }
 
 export interface Events {
@@ -23,7 +23,11 @@ export interface Headers {
     [key: string]: string
 }
 
-interface Config {
+export interface EventCallbacks {
+    [key: string]: any
+}
+
+export interface Config {
     url?: string
     method: keyof Methods
     data?: object | string
@@ -33,16 +37,19 @@ interface Config {
     xmlHttpRequest: () => XMLHttpRequest
     promise: (fn: () => Promise<any>) => Promise<any>
     abort?: any
-    params?: object
+    params?: object | null
+    withCredentials: boolean
+    raw?: boolean
+    events?: EventCallbacks
 }
 
-interface Response {
+export interface Response {
     status: number
     response: object
-    data: object
+    data?: string | object
     xhr: XMLHttpRequest
 }
 
-interface DynamicObject {
+export interface DynamicObject {
     [key: string]: any
 }
