@@ -1,6 +1,13 @@
 xr Changelog
 ============
 
+0.3.0
+-----
+
+* Rewrote in TypeScript
+* Deprecating project in favour of the new fetch API
+
+
 0.2.0
 ------
 
