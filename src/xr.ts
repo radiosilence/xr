@@ -6,11 +6,25 @@
 
 import { encode } from 'querystring'
 
-import { METHODS, EVENTS } from './constants'
+import { Methods, METHODS, EVENTS } from './constants'
 
-import { Methods, Events, Config, Response, DynamicObject } from '../index.d'
+export interface Config {
+    url?: string
+    method: keyof Methods
+    data?: object | string
+    headers: { [key: string]: string }
+    dump: (data: object) => string
+    load: (string: string) => object
+    xmlHttpRequest: () => XMLHttpRequest
+    promise: (fn: () => Promise<any>) => Promise<any>
+    abort?: any
+    params?: object | null
+    withCredentials: boolean
+    raw?: boolean
+    events?: { [key: string]: () => void }
+}
 
-const defaults = {
+const defaults: Config = {
   method: METHODS.GET,
   data: undefined,
   headers: {
@@ -22,6 +36,13 @@ const defaults = {
   xmlHttpRequest: (): XMLHttpRequest => new XMLHttpRequest(),
   promise: (fn: () => Promise<any>) => new Promise(fn),
   withCredentials: false,
+}
+
+export interface Response {
+    status: number
+    response: object
+    data?: string | object
+    xhr: XMLHttpRequest
 }
 
 const res = (xhr: XMLHttpRequest, data?: string | object): Response => ({
@@ -37,13 +58,13 @@ const configure = (opts: Partial<Config>): void => {
     config = { ...config, ...opts }
 }
 
-const promise = (args: Config, fn: any) =>
+const promise = (args: Partial<Config>, fn: any) =>
   ((args && args.promise)
     ? args.promise
     : (config.promise || defaults.promise)
   )(fn)
 
-const xr: any = (args: Config): Promise<any>  =>
+const xr = (args: Partial<Config>): Promise<any>  =>
     promise(args, (resolve: any, reject: any) => {
         const opts: Config = { ...defaults, ...config, ...args }
         const xhr = opts.xmlHttpRequest()
@@ -106,26 +127,22 @@ const xr: any = (args: Config): Promise<any>  =>
             else xhr.send()
     })
 
-xr.configure = configure
-xr.Methods = METHODS
-xr.Events = EVENTS
+const api = {
+    configure,
+    EVENTS,
+    METHODS,
+    get: (url: string, params?: object, args?: Partial<Config>) =>
+        xr({ url, method: METHODS.GET, params, ...args }),
+    put: (url: string, data: any, args: Partial<Config>) =>
+        xr({ url, method: METHODS.PUT, data, ...args }),
+    post: (url: string, data: any, args: Partial<Config>) =>
+        xr({ url, method: METHODS.POST, data, ...args }),
+    patch: (url: string, data: any, args: Partial<Config>) =>
+        xr({ url, method: METHODS.PATCH, data, ...args}),
+    del: (url: string, args: Partial<Config>) =>
+        xr({ url, method: METHODS.DELETE, ...args}),
+    options: (url: string, args: Partial<Config>) =>
+        xr({ url, method: METHODS.OPTIONS, ...args})
+}
 
-xr.get = (url: string, params: object, args: Partial<Config>) =>
-    xr({ url, method: METHODS.GET, params, ...args })
-
-xr.put = (url: string, data: any, args: Partial<Config>) =>
-    xr({ url, method: METHODS.PUT, data, ...args })
-
-xr.post = (url: string, data: any, args: Partial<Config>) =>
-    xr({ url, method: METHODS.POST, data, ...args })
-
-xr.patch = (url: string, data: any, args: Partial<Config>) =>
-    xr({ url, method: METHODS.PATCH, data, ...args})
-
-xr.del = (url: string, args: Partial<Config>) =>
-    xr({ url, method: METHODS.DELETE, ...args})
-
-xr.options = (url: string, args: Partial<Config>) =>
-    xr({ url, method: METHODS.OPTIONS, ...args})
-
-export default xr
+export default api
