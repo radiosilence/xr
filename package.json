@@ -6,7 +6,7 @@
   "scripts": {
     "update-authors": "git log --format='%aN <%aE>' | sort -u | grep -v noreply > AUTHORS",
     "prepublish": "npm run update-authors && npm run build",
-    "build": "NODE_ENV=production tsc && webpack --config webpack.config.js",
+    "build": "NODE_ENV=production tsc && node ./scripts/rename.js && webpack --config webpack.config.js",
     "lint": "eslint src"
   },
   "repository": {

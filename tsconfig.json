@@ -3,6 +3,8 @@
     "compilerOptions": {
         "outDir": "./dist",
         "sourceMap": true,
+        "declaration": true,
+        "declarationDir": "./",
         "module": "commonjs",
         "target": "es5",
         "noImplicitAny": false,
