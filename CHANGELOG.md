@@ -1,11 +1,19 @@
 xr Changelog
 ============
 
+0.3.2
+-----
+
+* Remove `querystring` dependency
+* Use prettier/eslint instead of tslint/tsfmt
+* More type tweaks
+
 0.3.1
 -----
 
 * Update dependencies and TS version
-* Use Parcel v2 beta for packaging
+* Use Parcel v2 for packaging
+* Fixing types
 
 0.3.0
 -----
