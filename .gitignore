@@ -1,6 +1,8 @@
 node_modules/
 dist/
+build/
 *.log
 .idea
 .vscode
 .cache
+.parcel-cache

@@ -8,15 +8,15 @@ import { encode, ParsedUrlQueryInput } from 'querystring'
 import { EVENTS, Methods, METHODS } from './constants'
 
 
-export interface Config {
+export interface Config<T = unknown> {
     url?: string
     method: keyof Methods
     data?: Document | BodyInit
     headers: { [key: string]: string }
-    dump: (data: object) => string
-    load: (string: string) => object
+    dump: (data: T) => string
+    load: (str: string) => T
     xmlHttpRequest: () => XMLHttpRequest
-    promise: (fn: () => Promise<any>) => Promise<any>
+    promise: (fn: () => Promise<unknown>) => Promise<unknown>
     abort?: any
     params?: ParsedUrlQueryInput
     withCredentials: boolean
@@ -91,13 +91,13 @@ const xr = (args: Partial<Config>): Promise<any>  =>
 
         xhr.addEventListener(EVENTS.LOAD, () => {
             if (xhr.status >= 200 && xhr.status < 300) {
-                let data
+                let responseData
                 if (xhr.responseText) {
-                    data = opts.raw === true
+                    responseData = opts.raw === true
                         ? xhr.responseText
                         : opts.load(xhr.responseText)
                 }
-                resolve(res(xhr, data))
+                resolve(res(xhr, responseData))
             } else {
                 reject(res(xhr))
             }
@@ -142,7 +142,7 @@ const api = {
     del: (url: string, args: Partial<Config>) =>
         xr({ url, method: METHODS.DELETE, ...args}),
     options: (url: string, args: Partial<Config>) =>
-        xr({ url, method: METHODS.OPTIONS, ...args})
+        xr({ url, method: METHODS.OPTIONS, ...args}),
 }
 
 export default api

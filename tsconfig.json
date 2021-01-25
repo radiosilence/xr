@@ -1,17 +1,17 @@
 {
     "compileOnSave": false,
     "compilerOptions": {
-        "outDir": "./dist",
+        "outDir": "./build",
         "sourceMap": true,
         "declaration": true,
-        "declarationDir": "./",
         "module": "commonjs",
-        "target": "es2015",
+        "target": "es5",
         "noImplicitAny": false,
         "strictNullChecks": true,
         "jsx": "react",
         "baseUrl": "./src",
         "lib": [
+            "ES2015",
             "dom"
         ],
         "typeRoots": [

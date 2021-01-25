@@ -6,7 +6,7 @@
   "scripts": {
     "update-authors": "git log --format='%aN <%aE>' | sort -u | grep -v noreply > AUTHORS",
     "prepublishOnly": "npm run update-authors && npm run build",
-    "build": "NODE_ENV=production tsc && node ./scripts/rename.js && parcel build src/xr.js",
+    "build": "NODE_ENV=production tsc && parcel build src/xr.ts",
     "lint": "eslint src"
   },
   "repository": {
