@@ -4,7 +4,6 @@
  * License: BSD
  */
 
-import { encode, ParsedUrlQueryInput } from 'querystring'
 import { EVENTS, Methods, METHODS } from './constants'
 
 export interface Config<T = unknown> {
@@ -17,7 +16,7 @@ export interface Config<T = unknown> {
     xmlHttpRequest: () => XMLHttpRequest
     promise: (fn: () => Promise<unknown>) => Promise<unknown>
     abort?: any
-    params?: ParsedUrlQueryInput
+    params?: string[][] | Record<string, string> | string | URLSearchParams
     withCredentials: boolean
     raw?: boolean
     events?: { [key: string]: () => void }
@@ -82,7 +81,9 @@ const xr = (args: Partial<Config>): Promise<any> =>
         xhr.open(
             opts.method,
             opts.params
-                ? `${opts.url.split('?')[0]}?${encode(opts.params)}`
+                ? `${opts.url.split('?')[0]}?${new URLSearchParams(
+                      opts.params,
+                  )}`
                 : opts.url,
             true,
         )

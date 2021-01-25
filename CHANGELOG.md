@@ -1,6 +1,12 @@
 xr Changelog
 ============
 
+0.3.1
+-----
+
+* Update dependencies and TS version
+* Use Parcel v2 beta for packaging
+
 0.3.0
 -----
 
