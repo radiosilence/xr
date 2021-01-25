@@ -39,12 +39,15 @@ const defaults: Config = {
 
 export interface Response {
     status: number
-    response: object
-    data?: string | object
+    response: Record<string, unknown>
+    data?: string | Record<string, unknown>
     xhr: XMLHttpRequest
 }
 
-const res = (xhr: XMLHttpRequest, data?: string | object): Response => ({
+const res = (
+    xhr: XMLHttpRequest,
+    data?: string | Record<string, unknown>,
+): Response => ({
     status: xhr.status,
     response: xhr.response,
     data,
@@ -67,7 +70,7 @@ const xr = (args: Partial<Config>): Promise<any> =>
         const opts: Config = { ...defaults, ...config, ...args }
         const xhr = opts.xmlHttpRequest()
 
-        if (opts.abort) {
+        if (opts.abort && typeof args.abort === 'function') {
             args.abort(() => {
                 reject(res(xhr))
                 xhr.abort()
