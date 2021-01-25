@@ -7,7 +7,6 @@
 import { encode, ParsedUrlQueryInput } from 'querystring'
 import { EVENTS, Methods, METHODS } from './constants'
 
-
 export interface Config<T = unknown> {
     url?: string
     method: keyof Methods
@@ -25,17 +24,17 @@ export interface Config<T = unknown> {
 }
 
 const defaults: Config = {
-  method: METHODS.GET,
-  data: undefined,
-  headers: {
-    'Accept': 'application/json',
-    'Content-Type': 'application/json',
-  },
-  dump: JSON.stringify,
-  load: JSON.parse,
-  xmlHttpRequest: (): XMLHttpRequest => new XMLHttpRequest(),
-  promise: (fn: () => Promise<any>) => new Promise(fn),
-  withCredentials: false,
+    method: METHODS.GET,
+    data: undefined,
+    headers: {
+        Accept: 'application/json',
+        'Content-Type': 'application/json',
+    },
+    dump: JSON.stringify,
+    load: JSON.parse,
+    xmlHttpRequest: (): XMLHttpRequest => new XMLHttpRequest(),
+    promise: (fn: () => Promise<any>) => new Promise(fn),
+    withCredentials: false,
 }
 
 export interface Response {
@@ -59,12 +58,11 @@ const configure = (opts: Partial<Config>): void => {
 }
 
 const promise = (args: Partial<Config>, fn: any) =>
-  ((args && args.promise)
-    ? args.promise
-    : (config.promise || defaults.promise)
-  )(fn)
+    (args && args.promise ? args.promise : config.promise || defaults.promise)(
+        fn,
+    )
 
-const xr = (args: Partial<Config>): Promise<any>  =>
+const xr = (args: Partial<Config>): Promise<any> =>
     promise(args, (resolve: any, reject: any) => {
         const opts: Config = { ...defaults, ...config, ...args }
         const xhr = opts.xmlHttpRequest()
@@ -84,7 +82,7 @@ const xr = (args: Partial<Config>): Promise<any>  =>
                 ? `${opts.url.split('?')[0]}?${encode(opts.params)}`
                 : opts.url,
             true,
-            )
+        )
 
         // setting after open for compatibility with IE versions <=10
         xhr.withCredentials = opts.withCredentials
@@ -93,9 +91,10 @@ const xr = (args: Partial<Config>): Promise<any>  =>
             if (xhr.status >= 200 && xhr.status < 300) {
                 let responseData
                 if (xhr.responseText) {
-                    responseData = opts.raw === true
-                        ? xhr.responseText
-                        : opts.load(xhr.responseText)
+                    responseData =
+                        opts.raw === true
+                            ? xhr.responseText
+                            : opts.load(xhr.responseText)
                 }
                 resolve(res(xhr, responseData))
             } else {
@@ -119,12 +118,13 @@ const xr = (args: Partial<Config>): Promise<any>  =>
             }
         }
 
-        const data = (typeof opts.data === 'object' && !opts.raw)
-            ? opts.dump(opts.data)
-            : opts.data
+        const data =
+            typeof opts.data === 'object' && !opts.raw
+                ? opts.dump(opts.data)
+                : opts.data
 
         if (data !== undefined) xhr.send(data)
-            else xhr.send()
+        else xhr.send()
     })
 
 const api = {
@@ -138,11 +138,11 @@ const api = {
     post: (url: string, data: any, args: Partial<Config>) =>
         xr({ url, method: METHODS.POST, data, ...args }),
     patch: (url: string, data: any, args: Partial<Config>) =>
-        xr({ url, method: METHODS.PATCH, data, ...args}),
+        xr({ url, method: METHODS.PATCH, data, ...args }),
     del: (url: string, args: Partial<Config>) =>
-        xr({ url, method: METHODS.DELETE, ...args}),
+        xr({ url, method: METHODS.DELETE, ...args }),
     options: (url: string, args: Partial<Config>) =>
-        xr({ url, method: METHODS.OPTIONS, ...args}),
+        xr({ url, method: METHODS.OPTIONS, ...args }),
 }
 
 export default api
