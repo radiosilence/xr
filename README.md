@@ -1,3 +1,5 @@
+**NOTE: Package is mostly unsupported. Would recommend fetch or axios**
+
 xr
 ========
 
