@@ -1,12 +1,12 @@
 {
   "name": "xr",
-  "version": "0.3.0",
+  "version": "0.3.1",
   "description": "Ultra-simple wrapper around XMLHttpRequest.",
-  "main": "xr.js",
+  "main": "./dist/xr.js",
   "scripts": {
     "update-authors": "git log --format='%aN <%aE>' | sort -u | grep -v noreply > AUTHORS",
-    "prepublish": "npm run update-authors && npm run build",
-    "build": "NODE_ENV=production tsc && node ./scripts/rename.js && webpack --config webpack.config.js",
+    "prepublishOnly": "npm run update-authors && npm run build",
+    "build": "NODE_ENV=production tsc && node ./scripts/rename.js && parcel build src/xr.js",
     "lint": "eslint src"
   },
   "repository": {
@@ -26,10 +26,10 @@
   },
   "homepage": "https://github.com/radiosilence/xr",
   "devDependencies": {
-    "tslint": "^5.1.0",
-    "typescript": "2.3",
-    "typescript-formatter": "5.1.3",
-    "webpack": "^1.12.12"
+    "parcel": "^2.0.0-beta.1",
+    "tslint": "^6.1.3",
+    "typescript": "4.1.3",
+    "typescript-formatter": "7.2.2"
   },
   "dependencies": {
     "querystring": "^0.2.0"

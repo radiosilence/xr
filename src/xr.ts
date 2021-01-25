@@ -4,21 +4,21 @@
  * License: BSD
  */
 
-import { encode } from 'querystring'
+import { encode, ParsedUrlQueryInput } from 'querystring'
+import { EVENTS, Methods, METHODS } from './constants'
 
-import { Methods, METHODS, EVENTS } from './constants'
 
 export interface Config {
     url?: string
     method: keyof Methods
-    data?: object | string
+    data?: Document | BodyInit
     headers: { [key: string]: string }
     dump: (data: object) => string
     load: (string: string) => object
     xmlHttpRequest: () => XMLHttpRequest
     promise: (fn: () => Promise<any>) => Promise<any>
     abort?: any
-    params?: object | null
+    params?: ParsedUrlQueryInput
     withCredentials: boolean
     raw?: boolean
     events?: { [key: string]: () => void }
@@ -131,7 +131,7 @@ const api = {
     configure,
     EVENTS,
     METHODS,
-    get: (url: string, params?: object, args?: Partial<Config>) =>
+    get: (url: string, params?: Record<string, any>, args?: Partial<Config>) =>
         xr({ url, method: METHODS.GET, params, ...args }),
     put: (url: string, data: any, args: Partial<Config>) =>
         xr({ url, method: METHODS.PUT, data, ...args }),

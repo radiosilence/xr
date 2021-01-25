@@ -3,3 +3,4 @@ dist/
 *.log
 .idea
 .vscode
+.cache

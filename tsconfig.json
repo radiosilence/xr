@@ -6,21 +6,22 @@
         "declaration": true,
         "declarationDir": "./",
         "module": "commonjs",
-        "target": "es5",
+        "target": "es2015",
         "noImplicitAny": false,
         "strictNullChecks": true,
         "jsx": "react",
         "baseUrl": "./src",
         "lib": [
-            "es2017",
             "dom"
         ],
         "typeRoots": [
             "node_modules/@types"
-         ]
+        ]
     },
+    "exclude": [
+        "node_modules"
+    ],
     "include": [
-        "./src/**/*.tsx",
-        "./src/**/*.ts"
+        "src"
     ]
 }
